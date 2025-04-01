@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://cjcorc10.github.io/travel-aid.git",
   "scripts": {
     "dev": "vite",
     "test": "vitest ",
