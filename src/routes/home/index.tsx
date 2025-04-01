@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { MockResponse } from '../../mocks/handlers'
-import { Link } from 'react-router'
 
 const Home = () => {
   const [data, setData] = useState<MockResponse>({ body: 'Inital Data' })
@@ -26,7 +25,7 @@ const Home = () => {
       <div className="flex gap-4 items-center">
         <button
           onClick={handleClick}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 rounded"
+          className="bg-black hover:bg-black/80 hover:cursor-pointer text-white font-bold px-2 py-1 rounded duration-100 ease-in"
         >
           Click me
         </button>
