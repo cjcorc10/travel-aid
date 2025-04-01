@@ -1,5 +1,5 @@
-import { Outlet } from "react-router";
-import Nav from "./components/nav";
+import { Outlet } from 'react-router'
+import Nav from './components/nav'
 
 const App = () => {
   return (
@@ -7,6 +7,6 @@ const App = () => {
       <Nav />
       <Outlet />
     </main>
-  );
-};
-export default App;
+  )
+}
+export default App

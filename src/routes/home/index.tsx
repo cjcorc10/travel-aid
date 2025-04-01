@@ -1,25 +1,25 @@
-import { useState } from "react";
-import { MockResponse } from "../../mocks/handlers";
-import { Link } from "react-router";
+import { useState } from 'react'
+import { MockResponse } from '../../mocks/handlers'
+import { Link } from 'react-router'
 
 const Home = () => {
-  const [data, setData] = useState<MockResponse>({ body: "Inital Data" });
+  const [data, setData] = useState<MockResponse>({ body: 'Inital Data' })
   const handleClick = async () => {
     try {
-      const response = await fetch("https://api.com/");
+      const response = await fetch('https://api.com/')
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error('Network response was not ok')
       }
-      const data = await response.json();
-      console.log(data);
-      setData(data);
+      const data = await response.json()
+      console.log(data)
+      setData(data)
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error)
       setData((prev) => {
-        return { ...prev, error: "Error fetching data" };
-      });
+        return { ...prev, error: 'Error fetching data' }
+      })
     }
-  };
+  }
   return (
     <div className="flex flex-col m-5 gap-4">
       <h1 className="text-3xl font-bold underline">App</h1>
@@ -33,7 +33,7 @@ const Home = () => {
         <p className="text-gray-700">{data.error || data.body}</p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

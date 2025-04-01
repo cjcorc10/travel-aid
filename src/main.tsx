@@ -1,25 +1,25 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router";
-import "./index.css";
-import App from "./App.tsx";
-import Flights from "./routes/flights/index.tsx";
-import Home from "./routes/home/index.tsx";
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter, Route, Routes } from 'react-router'
+import './index.css'
+import App from './App.tsx'
+import Flights from './routes/flights/index.tsx'
+import Home from './routes/home/index.tsx'
 
 async function enableMocking() {
-  if (process.env.NODE_ENV !== "development") {
-    return;
+  if (process.env.NODE_ENV !== 'development') {
+    return
   }
 
-  const { worker } = await import("./mocks/browser");
+  const { worker } = await import('./mocks/browser')
 
   // `worker.start()` returns a Promise that resolves
   // once the Service Worker is up and ready to intercept requests.
-  return worker.start();
+  return worker.start()
 }
 
 enableMocking().then(() => {
-  createRoot(document.getElementById("root")!).render(
+  createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <BrowserRouter>
         <Routes>
@@ -30,5 +30,5 @@ enableMocking().then(() => {
         </Routes>
       </BrowserRouter>
     </StrictMode>
-  );
-});
+  )
+})
