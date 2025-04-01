@@ -1,6 +1,7 @@
 import { http, HttpResponse } from "msw";
 export interface MockResponse {
   body: string;
+  error?: string;
 }
 
 const mockResponse: MockResponse = {
