@@ -12,13 +12,13 @@ describe("App", () => {
     expect(
       screen.getByRole("button", { name: /click me/i })
     ).toBeInTheDocument();
-    expect(screen.getByText(/off/i)).toBeInTheDocument();
+    expect(screen.getByText(/inital data/i)).toBeInTheDocument();
   });
   it("Example of how to use userEvent to capture events", async () => {
     const user = userEvent.setup();
     render(<App />);
     const button = screen.getByRole("button", { name: /click me/i });
     await user.click(button);
-    expect(screen.getByText(/on/i)).toBeInTheDocument();
+    expect(screen.getByText(/mock data/i)).toBeInTheDocument();
   });
 });
