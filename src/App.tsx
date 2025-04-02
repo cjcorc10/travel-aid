@@ -1,5 +1,12 @@
-const App = () => {
-  return <h1 className="text-3xl font-bold underline">App</h1>;
-};
+import { Outlet } from 'react-router'
+import Nav from './components/nav'
 
-export default App;
+const App = () => {
+  return (
+    <main>
+      <Nav />
+      <Outlet />
+    </main>
+  )
+}
+export default App
