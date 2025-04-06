@@ -6,14 +6,15 @@ interface Inputs {
     destination: string
     from: Date
     to?: Date
-    travelers: number
+    adults: number
+    children: number
 }
 
 type TripType = "round-trip" | "one-way"
 
 
 const FlightForm = () => {
-    const { register, handleSubmit} = useForm<Inputs>({defaultValues: {travelers: 1}})
+    const { register, handleSubmit} = useForm<Inputs>({defaultValues: {adults: 1}})
     //const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
 
     const [roundTrip, setRoundTrip] = useState<TripType>("round-trip");
@@ -41,10 +42,22 @@ const FlightForm = () => {
                 >To</label>
             <input {...register("destination")}
                 className="border border-gray-300 rounded-lg mb-4 p-1 px-2"/>
-            <label
-                className="text-gray-600">Travelers</label>
-                <input {...register("travelers")}
-                    className="border border-gray-300 p-1 px-2 rounded-lg w-10 mb-4"/>
+            <div className="flex justify-around">
+                <div className="flex flex-col">
+
+                <label
+                    className="text-gray-600">Adults</label>
+                <input type="number" {...register("adults")}
+                    className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-4"/>
+                    </div>
+                    <div className="flex flex-col">
+
+                <label
+                    className="text-gray-600">Children</label>
+                <input type="number" {...register("children")}
+                    className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-4"/>
+                    </div>
+            </div>
             <label
                 className="text-gray-600">Date from</label>
                 <input type="date" {...register("from")}
@@ -60,7 +73,7 @@ const FlightForm = () => {
         </div>
         <input 
             className="bg-emerald-600 overflow-clip rounded-b-lg p-2 text-green-50 font-bold hover:bg-emerald-700"
-            type="submit" />
+            type="submit"  />
     </form>
   )
 }
