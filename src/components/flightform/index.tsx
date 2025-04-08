@@ -1,7 +1,30 @@
 import { useForm, SubmitHandler } from "react-hook-form"
+import { MockResponse } from '../../mocks/handlers'
 import { useState } from "react"
 
-interface Inputs {
+
+// function to handle api call after form submission
+const handleClick = async (setData: Setter) => {
+    try {
+      const response = await fetch('https://api.com/')
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      const data = await response.json()
+      console.log(data)
+      setData(data)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+      setData((prev) => {
+        return { ...prev, error: 'Error fetching data' }
+      })
+    }
+  }
+
+type Setter = React.Dispatch<React.SetStateAction<MockResponse>>
+
+// all inputs types on form
+type Inputs = {
     departing: string
     destination: string
     from: Date
@@ -10,20 +33,23 @@ interface Inputs {
     children: number
 }
 
+// define type for roundTrip state variable that controls from render
 type TripType = "round-trip" | "one-way"
 
 
-const FlightForm = () => {
+const FlightForm = ({setData}: {setData: Setter}) => {
     const { register, handleSubmit} = useForm<Inputs>({defaultValues: {adults: 1}})
-    //const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        handleClick(setData);
+        console.log(data);
+    }
 
     const [roundTrip, setRoundTrip] = useState<TripType>("round-trip");
+
   return (
     <form 
         className="bg-white flex flex-col border border-emerald-500 rounded-lg shadow-lg"
-        onSubmit={handleSubmit((data) => {
-            console.log(data);
-        })}>
+        onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col p-8">
             <select
                 className="border-3 border-emerald-500 rounded-lg px-2 p-1 mb-7"
@@ -73,7 +99,7 @@ const FlightForm = () => {
         </div>
         <input 
             className="bg-emerald-600 overflow-clip rounded-b-lg p-2 text-green-50 font-bold hover:bg-emerald-700"
-            type="submit"  />
+            type="submit" value="search"  />
     </form>
   )
 }
