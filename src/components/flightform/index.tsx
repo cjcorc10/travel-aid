@@ -3,6 +3,7 @@ import { MockResponse } from '../../mocks/handlers'
 import { useState } from "react"
 
 
+
 // function to handle api call after form submission
 const handleClick = async (setData: Setter) => {
     try {
@@ -38,7 +39,7 @@ type TripType = "round-trip" | "one-way"
 
 
 const FlightForm = ({setData}: {setData: Setter}) => {
-    const { register, handleSubmit} = useForm<Inputs>({defaultValues: {adults: 1}})
+    const { register, handleSubmit} = useForm<Inputs>({defaultValues: {adults: 1, children: 0}})
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         handleClick(setData);
         console.log(data);
@@ -48,7 +49,7 @@ const FlightForm = ({setData}: {setData: Setter}) => {
 
   return (
     <form 
-        className="bg-white flex flex-col border border-emerald-500 rounded-lg shadow-lg"
+        className="bg-white w-full flex flex-col rounded-lg shadow-lg mt-12 max-w-4xl min-w-md border border-emerald-200"
         onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col p-8">
             <select
@@ -58,44 +59,56 @@ const FlightForm = ({setData}: {setData: Setter}) => {
                 <option value="round-trip">Round-trip</option>
                 <option value="one-way">One-way</option>
             </select>
-            <label
-                className="text-gray-600"
-                >From</label>
-            <input {...register("departing")}
-                className="border border-gray-300 rounded-lg mb-4 p-1 px-2"/>
-            <label
-                className="text-gray-600"
-                >To</label>
-            <input {...register("destination")}
-                className="border border-gray-300 rounded-lg mb-4 p-1 px-2"/>
+            <div className="flex flex-col md:flex-row md:gap-6">
+                <div className="flex flex-col flex-1">
+                    <label
+                        className="text-gray-600"
+                        >From</label>
+                    <input {...register("departing")}
+                        className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md"/>
+                </div>
+                <div className="flex flex-col flex-1">
+                    <label
+                        className="text-gray-600"
+                        >To</label>
+                    <input {...register("destination")}
+                        className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md"/>
+                </div>
+            </div>
             <div className="flex justify-around">
                 <div className="flex flex-col">
 
                 <label
                     className="text-gray-600">Adults</label>
                 <input type="number" {...register("adults")}
-                    className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-4"/>
+                    className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-2 shadow-md"/>
                     </div>
                     <div className="flex flex-col">
 
                 <label
                     className="text-gray-600">Children</label>
                 <input type="number" {...register("children")}
-                    className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-4"/>
+                    className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-2 shadow-md"/>
                     </div>
             </div>
-            <label
-                className="text-gray-600">Date from</label>
-                <input type="date" {...register("from")}
-                    className="border border-gray-300 rounded-lg mb-4 p-1 px-2"/>
-            {roundTrip == "round-trip" && 
-                <>
+            <div className="flex flex-col md:flex-row md:gap-6">
+                <div className="flex flex-col flex-1">
+
                     <label
-                        className="text-gray-600">Date to</label>
-                    <input type="date" {...register("to")}
-                        className="border border-gray-300 rounded-lg mb-4 p-1 px-2"/>
-                </>
-            }
+                        className="text-gray-600">Date from</label>
+                        <input type="date" {...register("from")}
+                            className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md"/>
+                </div>
+                {roundTrip == "round-trip" && 
+                    <div className="flex flex-col flex-1">
+                    
+                        <label
+                            className="text-gray-600">Date to</label>
+                        <input type="date" {...register("to")}
+                            className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md"/>
+                    </div>
+                }
+            </div>
         </div>
         <input 
             className="bg-emerald-600 overflow-clip rounded-b-lg p-2 text-green-50 font-bold hover:bg-emerald-700"

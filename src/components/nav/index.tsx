@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 
 const Nav = () => {
   return (
-    <nav className="w-full sticky top-0 shadow-md">
+    <nav className="w-full sticky top-0 shadow-md bg-white z-10">
       <ul className="flex gap-4 p-4 items-center justify-between text-emerald-700">
         <li className="hover:underline">
           <Link to={'/'}>
