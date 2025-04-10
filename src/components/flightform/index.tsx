@@ -49,7 +49,7 @@ const FlightForm = ({setData}: {setData: Setter}) => {
 
   return (
     <form 
-        className="bg-white w-full flex flex-col rounded-lg shadow-lg mt-12 max-w-4xl min-w-md border border-emerald-200"
+        className="bg-white w-full flex flex-col rounded-lg shadow-lg mt-12 max-w-4xl min-w-lg border border-emerald-500"
         onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col p-8">
             <select
@@ -65,14 +65,14 @@ const FlightForm = ({setData}: {setData: Setter}) => {
                         className="text-gray-600"
                         >From</label>
                     <input {...register("departing")}
-                        className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md"/>
+                        className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"/>
                 </div>
                 <div className="flex flex-col flex-1">
                     <label
                         className="text-gray-600"
                         >To</label>
                     <input {...register("destination")}
-                        className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md"/>
+                        className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"/>
                 </div>
             </div>
             <div className="flex justify-around">
@@ -81,14 +81,14 @@ const FlightForm = ({setData}: {setData: Setter}) => {
                 <label
                     className="text-gray-600">Adults</label>
                 <input type="number" {...register("adults")}
-                    className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-2 shadow-md"/>
+                    className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-2 shadow-md outline-pink-200"/>
                     </div>
                     <div className="flex flex-col">
 
                 <label
                     className="text-gray-600">Children</label>
                 <input type="number" {...register("children")}
-                    className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-2 shadow-md"/>
+                    className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-2 shadow-md outline-pink-200"/>
                     </div>
             </div>
             <div className="flex flex-col md:flex-row md:gap-6">
@@ -97,7 +97,7 @@ const FlightForm = ({setData}: {setData: Setter}) => {
                     <label
                         className="text-gray-600">Date from</label>
                         <input type="date" {...register("from")}
-                            className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md"/>
+                            className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"/>
                 </div>
                 {roundTrip == "round-trip" && 
                     <div className="flex flex-col flex-1">
@@ -105,7 +105,7 @@ const FlightForm = ({setData}: {setData: Setter}) => {
                         <label
                             className="text-gray-600">Date to</label>
                         <input type="date" {...register("to")}
-                            className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md"/>
+                            className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"/>
                     </div>
                 }
             </div>
