@@ -11,7 +11,12 @@ const Nav = () => {
           </Link>
         </li>
         <li className="hover:underline">
-          <Link to={'/flights'} className='font-ubuntu font-bold border-2 px-4 py-2 rounded-full hover:bg-gray-50'>Book a flight</Link>
+          <Link
+            to={'/flights'}
+            className="font-ubuntu font-bold border-2 px-4 py-2 rounded-full hover:bg-gray-50"
+          >
+            Book a flight
+          </Link>
         </li>
       </ul>
     </nav>
