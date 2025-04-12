@@ -1,41 +1,21 @@
 import { useState } from 'react'
 import { MockResponse } from '../../mocks/handlers'
-import Hero from '../../components/Hero'
+import FlightForm from '../../components/flightform'
+import Hero from '../../components/hero'
+
 
 const Home = () => {
-  const [data, setData] = useState<MockResponse>({ body: 'Inital Data' })
-  const handleClick = async () => {
-    try {
-      const response = await fetch('https://api.com/')
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      const data = await response.json()
-      console.log(data)
-      setData(data)
-    } catch (error) {
-      console.error('Error fetching data:', error)
-      setData((prev) => {
-        return { ...prev, error: 'Error fetching data' }
-      })
-    }
-  }
+
+  const [data, setData] = useState<MockResponse>({ body: 'Initial Data' })
+  
   return (
-    <div className="bg-gray-50 font-ubuntu flex justify-center p-4">
-      <div className="flex flex-col md:flex-row mx-8 w-full max-w-7xl">
-      <Hero />
-      <div className="flex-1 flex flex-col items-center justify-center gap-4">
-        <h1 className="text-3xl font-bold underline text-emerald-700">App</h1>
-        <div className="flex gap-4 items-center">
-          <button
-            onClick={handleClick}
-            className="bg-emerald-700 hover:bg-emerald-600 hover:cursor-pointer text-emerald-50 font-bold px-2 py-1 rounded duration-100 ease-in"
-            >
-            Click me
-          </button>
-          <p className="text-gray-700">{data.error || data.body}</p>
-        </div>
-      </div>
+    <div className="bg-green-50 font-ubuntu flex items-center h-screen flex-col">
+      <div className="flex flex-1 flex-col md:flex-row w-full h-full">
+        <Hero />
+        <div className="flex flex-2 flex-col items-center md:pt-20 overflow-auto sm:px-4 border-l border-green-600">
+          <FlightForm setData={setData}/>
+          <p className='text-red-400 font-bold mt-4'>{data.error || data.body}</p>
+        </div> 
       </div>
     </div>
   )
