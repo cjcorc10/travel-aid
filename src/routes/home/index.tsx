@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { MockResponse } from '../../mocks/handlers'
 import FlightForm from '../../components/flightform'
-import Hero from '../../components/Hero'
+import Hero from '../../components/hero'
+
 
 const Home = () => {
-  const [data, setData] = useState<MockResponse>({ body: 'Inital Data' })
+
+  const [data, setData] = useState<MockResponse>({ body: 'Initial Data' })
   
   return (
     <div className="bg-green-50 font-ubuntu flex items-center h-screen flex-col">
