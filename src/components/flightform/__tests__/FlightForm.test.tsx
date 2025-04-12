@@ -23,7 +23,5 @@ describe('FlightForm', () => {
         expect(screen.queryByLabelText('to')).toBeInTheDocument()
         await userEvent.selectOptions(screen.getByRole('combobox', { name: /trip-type/i }), 'one-way')
         expect(screen.queryByLabelText('to')).toBeNull()
-
-        
     })
 })
