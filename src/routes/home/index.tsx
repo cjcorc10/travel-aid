@@ -7,7 +7,7 @@ const Home = () => {
   const [data, setData] = useState<MockResponse>({ body: 'Initial Data' })
 
   return (
-    <div className="bg-green-50 font-ubuntu flex items-center h-screen flex-col">
+    <div className="bg-green-50 font-montserrat flex items-center h-screen flex-col">
       <div className="flex flex-1 flex-col md:flex-row w-full h-full">
         <Hero />
         <div className="flex flex-2 flex-col items-center md:pt-20 overflow-auto sm:px-4 border-l border-green-600">
