@@ -8,4 +8,4 @@ module.exports = {
   semi: true,
   // allow trailing commas for multi-line objects and arrays (not function parameters)
   trailingComma: 'es5',
-}
+};
