@@ -24,14 +24,14 @@ const FlightCard = ({ flight }: { flight: Flight }) => {
         <div className="flex flex-row items-center">
           <Ghost className="mr-4" />
           <div>
-            <h3 className="font-bold text-lg leading-5">{flight.airline}</h3>
+            <h3 className="font-bold text-xl leading-5">{flight.airline}</h3>
             <p className="text-gray-500 text-sm leading-none">
               {flight.flightNumber}
             </p>
           </div>
         </div>
         <div>
-          <h2 className="font-bold text-2xl leading-5">
+          <h2 className="font-bold text-xl leading-5 text-gray-600">
             ${flight.pricePerPassenger}
           </h2>
           <p className="text-gray-500 text-[.6rem] font-bold leading-none">
@@ -49,12 +49,12 @@ const FlightCard = ({ flight }: { flight: Flight }) => {
       </div>
       <div className="flex  items-center gap-4 justify-center bg-gray-50 rounded-md p-2">
         <div>
-          <h3 className="text-3xl font-bold">8:00</h3>
+          <h3 className="text-3xl font-bold font-vice">8:00</h3>
           <p className="text-sm text-gray-500 text-center">{flight.origin}</p>
         </div>
         <MoveRight size={32} color="pink" />
         <div>
-          <h3 className="text-3xl font-bold">11:30</h3>
+          <h3 className="text-3xl font-bold font-vice">11:30</h3>
           <p className="text-sm text-gray-500 text-center">
             {flight.destination}
           </p>

@@ -1,7 +1,6 @@
 import FilterFlights from '../../components/filterflights';
 import BookingForm from '../../components/bookingForm';
 import FlightCard from '../../components/flightcard';
-import { Filter } from 'lucide-react';
 
 const Flights = () => {
   type Flights = {
@@ -48,9 +47,9 @@ const Flights = () => {
   return (
     <div className="w-full h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-22 px-2">
       <BookingForm />
-      <h2 className="mt-15 font-vice text-xl text-emerald-600 underline underline-offset-2 border-b-2 border-pink-300">
+      {/*       <h2 className="mt-15 font-vice text-xl text-emerald-600 underline underline-offset-2 border-b-2 border-pink-300">
         Available Flights
-      </h2>
+      </h2> */}
       <FilterFlights />
       {flightData.departingFlights?.map((flight) => (
         <FlightCard flight={flight} />
