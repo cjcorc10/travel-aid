@@ -14,13 +14,10 @@ const handleClick = async (setData: Setter) => {
     setData(data);
   } catch (error) {
     console.error('Error fetching data:', error);
-    setData((prev) => {
-      return { ...prev, error: 'Error fetching data' };
-    });
   }
 };
 
-type Setter = React.Dispatch<React.SetStateAction<MockResponse>>;
+type Setter = React.Dispatch<React.SetStateAction<MockResponse | null>>;
 
 // all inputs types on form
 type Inputs = {
@@ -49,7 +46,7 @@ const FlightForm = ({ setData }: { setData: Setter }) => {
   return (
     <form
       aria-label="form"
-      className="bg-white w-full flex flex-col rounded-lg shadow-lg mt-12 max-w-4xl border border-emerald-500"
+      className="bg-white w-full flex flex-col md:rounded-lg shadow-lg  max-w-4xl border border-gray-200"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col p-8">
@@ -124,7 +121,7 @@ const FlightForm = ({ setData }: { setData: Setter }) => {
         </div>
       </div>
       <input
-        className="bg-emerald-600 overflow-clip rounded-b-lg p-2 text-green-50 font-bold hover:bg-emerald-700"
+        className="bg-emerald-600 overflow-clip md:rounded-b-lg p-2 text-green-50 font-bold hover:bg-emerald-700"
         type="submit"
         value="search"
       />

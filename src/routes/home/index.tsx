@@ -4,18 +4,15 @@ import FlightForm from '../../components/flightform';
 import Hero from '../../components/hero';
 
 const Home = () => {
-  const [data, setData] = useState<MockResponse>({ body: 'Initial Data' });
+  const [data, setData] = useState<MockResponse | null>(null);
 
   return (
-    <div className="bg-green-50 font-montserrat flex items-center h-screen w-full flex-col absolute top-0 left-0">
-      <div className="flex flex-1 flex-col md:flex-row w-full h-full">
+    <div className="bg-green-50 font-montserrat h-screen md:h-[calc(100vh-4rem)] w-full flex md:flex-row flex-col">
+      <div className="md:flex-1 h-full relative overflow-hidden border-b md:border-r border-green-600 ">
         <Hero />
-        <div className="flex flex-2 flex-col items-center justify-center pt-20 overflow-auto border-l border-green-600">
-          <FlightForm setData={setData} />
-          <p className="text-red-400 font-bold mt-4">
-            {data.error || data.body}
-          </p>
-        </div>
+      </div>
+      <div className="flex md:flex-2 flex-col items-center justify-center my-8">
+        <FlightForm setData={setData} />
       </div>
     </div>
   );
