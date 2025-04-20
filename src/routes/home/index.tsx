@@ -4,7 +4,7 @@ import FlightForm from '../../components/flightform';
 import Hero from '../../components/hero';
 
 const Home = () => {
-  const [data, setData] = useState<MockResponse | null>(null);
+  const [flightData, setData] = useState<MockResponse | null>(null);
 
   return (
     <div className="bg-green-50 font-montserrat h-screen md:h-[calc(100vh-4rem)] w-full flex md:flex-row flex-col">

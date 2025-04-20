@@ -13,8 +13,6 @@ type Flight = {
 };
 
 const FlightCard = ({ flight }: { flight: Flight }) => {
-  console.log(flight);
-
   return (
     <div
       className="bg-white mt-2 border border-gray-100 shadow-md rounded-md py-2 px-4 font-montserrat flex flex-col gap-4"

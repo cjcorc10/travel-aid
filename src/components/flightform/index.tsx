@@ -1,47 +1,35 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { MockResponse } from '../../mocks/handlers';
+import { useNavigate } from 'react-router';
 import { useState } from 'react';
-
-// function to handle api call after form submission
-const handleClick = async (setData: Setter) => {
-  try {
-    const response = await fetch('https://api.com/');
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const data = await response.json();
-    console.log(data);
-    setData(data);
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
-};
-
-type Setter = React.Dispatch<React.SetStateAction<MockResponse | null>>;
-
-// all inputs types on form
-type Inputs = {
-  departing: string;
-  destination: string;
-  from: Date;
-  to?: Date;
-  adults: number;
-  children: number;
-};
+import { getFlights } from '../services/flights';
 
 // define type for roundTrip state variable that controls from render
 type TripType = 'round-trip' | 'one-way';
 
-const FlightForm = ({ setData }: { setData: Setter }) => {
+const FlightForm = ({
+  setData,
+}: {
+  setData: React.Dispatch<React.SetStateAction<MockResponse | null>>;
+}) => {
+  const navigate = useNavigate();
+
   const { register, handleSubmit } = useForm<Inputs>({
     defaultValues: { adults: 1, children: 0 },
   });
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    handleClick(setData);
-    console.log(data);
-  };
 
   const [roundTrip, setRoundTrip] = useState<TripType>('round-trip');
+
+  // submits collected formData to API
+  const onSubmit: SubmitHandler<Inputs> = async (formData) => {
+    try {
+      const data = await getFlights(formData);
+      setData(data);
+      navigate('/flights', { state: data });
+    } catch (error) {
+      console.error('Error fetching data', error);
+    }
+  };
 
   return (
     <form

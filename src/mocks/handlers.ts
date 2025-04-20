@@ -4,21 +4,6 @@ export interface MockResponse {
   error?: string;
 }
 
-export type Flights = {
-  roundTrip: boolean;
-  departingFlights: {
-    flightId: string;
-    flightNumber: string;
-    airline: string;
-    origin: string;
-    destination: string;
-    departureTime: string;
-    arrivalTime: string;
-    pricePerPassenger: number;
-  }[];
-  totalPassengers: number;
-};
-
 const flightData: Flights = {
   roundTrip: false,
   departingFlights: [
