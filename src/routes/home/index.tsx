@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MockResponse } from '../../mocks/handlers';
 import FlightForm from '../../components/flightform';
 import Hero from '../../components/hero';
 
 const Home = () => {
   const [flightData, setData] = useState<MockResponse | null>(null);
+  const [airports, setAirports] = useState<Airport[]>([]);
+
+  // fetch all airport data
+  useEffect(() => {
+    (async () => {
+      const response = await fetch('/data/airports.json');
+      const data = await response.json();
+      setAirports(data);
+    })();
+  }, []);
 
   return (
     <div className="bg-green-50 font-montserrat h-screen md:h-[calc(100vh-4rem)] w-full flex md:flex-row flex-col">
@@ -12,7 +22,7 @@ const Home = () => {
         <Hero />
       </div>
       <div className="flex md:flex-2 flex-col items-center justify-center my-8">
-        <FlightForm setData={setData} />
+        <FlightForm setData={setData} airports={airports} />
       </div>
     </div>
   );

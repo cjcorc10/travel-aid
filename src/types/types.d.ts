@@ -22,3 +22,12 @@ type Flights = {
   }[];
   totalPassengers: number;
 };
+
+type Airport = {
+  airport: string;
+  city: string;
+  country: string;
+  code: string;
+  longitude: number;
+  latitude: number;
+};
