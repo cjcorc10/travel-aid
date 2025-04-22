@@ -1,9 +1,21 @@
-const Flights = () => {
-  return (
-    <div className="m-5">
-      <h1 className="text-3xl font-bold underline">Book A Flight!</h1>
-    </div>
-  )
-}
+import FilterFlights from '../../components/filterflights';
+import BookingForm from '../../components/bookingForm';
+import FlightCard from '../../components/flightcard';
+import { useLocation } from 'react-router';
 
-export default Flights
+const Flights = () => {
+  const location = useLocation();
+  const flightData: Flights = location.state?.body;
+
+  return (
+    <div className="w-full h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-22 px-2">
+      <BookingForm />
+      <FilterFlights />
+      {flightData?.departingFlights?.map((flight) => (
+        <FlightCard flight={flight} />
+      ))}
+    </div>
+  );
+};
+
+export default Flights;

@@ -1,24 +1,21 @@
-import { useState } from 'react'
-import { MockResponse } from '../../mocks/handlers'
-import FlightForm from '../../components/flightform'
-import Hero from '../../components/hero'
-
+import { useState } from 'react';
+import { MockResponse } from '../../mocks/handlers';
+import FlightForm from '../../components/flightform';
+import Hero from '../../components/hero';
 
 const Home = () => {
+  const [flightData, setData] = useState<MockResponse | null>(null);
 
-  const [data, setData] = useState<MockResponse>({ body: 'Initial Data' })
-  
   return (
-    <div className="bg-green-50 font-ubuntu flex items-center h-screen flex-col">
-      <div className="flex flex-1 flex-col md:flex-row w-full h-full">
+    <div className="bg-green-50 font-montserrat h-screen md:h-[calc(100vh-4rem)] w-full flex md:flex-row flex-col">
+      <div className="md:flex-1 h-full relative overflow-hidden border-b md:border-r border-green-600 ">
         <Hero />
-        <div className="flex flex-2 flex-col items-center md:pt-20 overflow-auto sm:px-4 border-l border-green-600">
-          <FlightForm setData={setData}/>
-          <p className='text-red-400 font-bold mt-4'>{data.error || data.body}</p>
-        </div> 
+      </div>
+      <div className="flex md:flex-2 flex-col items-center justify-center my-8">
+        <FlightForm setData={setData} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

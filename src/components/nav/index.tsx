@@ -1,26 +1,22 @@
-import { ArrowLeft } from 'lucide-react'
-import { Link } from 'react-router'
+import { Plane } from 'lucide-react';
+import { Link } from 'react-router';
 
 const Nav = () => {
   return (
-    <nav className="w-full sticky top-0 shadow-md bg-white z-10">
-      <ul className="flex gap-4 p-4 items-center justify-between text-emerald-700">
-        <li className="hover:underline">
+    <nav className="w-full h-[4rem] sticky top-0 shadow-md bg-emerald-600 z-10">
+      <ul className="flex gap-4 p-4 items-center text-emerald-600">
+        <li className="text-white">
           <Link to={'/'}>
-            <ArrowLeft />
-          </Link>
-        </li>
-        <li className="hover:underline">
-          <Link
-            to={'/flights'}
-            className="font-ubuntu font-bold border-2 px-4 py-2 rounded-full hover:bg-gray-50"
-          >
-            Book a flight
+            <h3 className="font-bold text-4xl text-white font-vice">
+              Travel
+              <Plane className="text-pink-300 inline-block" size={32} />
+              aid
+            </h3>
           </Link>
         </li>
       </ul>
     </nav>
-  )
-}
+  );
+};
 
-export default Nav
+export default Nav;
