@@ -14,7 +14,7 @@ const FilterFlights = () => {
       <input
         type="text"
         placeholder="filter by text.."
-        className="bg-white rounded-md shadow-md p-2 flex-1"
+        className="bg-white rounded-md shadow-md p-2 flex-1 outline-pink-200"
       />
       <div className="bg-pink-300 rounded-md shadow-md p-2 flex">
         <DropdownMenu>

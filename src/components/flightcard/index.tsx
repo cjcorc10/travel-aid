@@ -1,5 +1,4 @@
 import { Ghost, MoveRight, Clock } from 'lucide-react';
-import clsx from 'clsx';
 
 type Flight = {
   flightId: string;

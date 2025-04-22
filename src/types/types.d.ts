@@ -5,6 +5,7 @@ type Inputs = {
   to?: Date;
   adults: number;
   children: number;
+  isRoundTrip?: boolean;
 };
 
 type Flights = {

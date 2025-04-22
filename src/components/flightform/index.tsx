@@ -3,9 +3,7 @@ import { MockResponse } from '../../mocks/handlers';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import { getFlights } from '../services/flights';
-
-// define type for roundTrip state variable that controls from render
-type TripType = 'round-trip' | 'one-way';
+import clsx from 'clsx';
 
 const FlightForm = ({
   setData,
@@ -18,7 +16,7 @@ const FlightForm = ({
     defaultValues: { adults: 1, children: 0 },
   });
 
-  const [roundTrip, setRoundTrip] = useState<TripType>('round-trip');
+  const [roundTrip, setRoundTrip] = useState(true);
 
   // submits collected formData to API
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
@@ -38,15 +36,32 @@ const FlightForm = ({
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col p-8">
-        <select
-          aria-label="trip-type"
-          className="border-3 border-emerald-500 rounded-lg px-2 p-1 mb-7"
-          value={roundTrip}
-          onChange={(e) => setRoundTrip(e.target.value as TripType)}
-        >
-          <option value="round-trip">Round-trip</option>
-          <option value="one-way">One-way</option>
-        </select>
+        <div className="flex items-center mb-4">
+          <div
+            onClick={() => setRoundTrip((prev) => !prev)}
+            className={clsx(
+              'relative h-7 w-11 rounded-full inline-flex items-center',
+              roundTrip
+                ? 'bg-green-600 outline-2 outline-green-300'
+                : 'bg-gray-500'
+            )}
+          >
+            <div
+              className={clsx(
+                'h-6 w-6 bg-gray-100 rounded-full transform transition-transform',
+                roundTrip ? 'translate-x-0.5' : 'translate-x-4.5'
+              )}
+            ></div>
+          </div>
+          <p
+            className={clsx(
+              'ml-2 text-gray-600',
+              roundTrip && 'text-green-500'
+            )}
+          >
+            round trip
+          </p>
+        </div>
         <div className="flex flex-col md:flex-row md:gap-6">
           <div className="flex flex-col flex-1">
             <label className="text-gray-600">From</label>
@@ -95,7 +110,7 @@ const FlightForm = ({
               className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"
             />
           </div>
-          {roundTrip == 'round-trip' && (
+          {roundTrip && (
             <div className="flex flex-col flex-1">
               <label className="text-gray-600">Date to</label>
               <input
