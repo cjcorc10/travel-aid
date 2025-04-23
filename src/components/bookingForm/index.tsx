@@ -1,12 +1,7 @@
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import { useContext } from 'react';
 import AutoCompleteInput from '../autoCompleteInput';
-import AirportsContext from '@/contexts/airports';
 
 const BookingForm = () => {
-  const airports = useContext(AirportsContext);
-  console.log(airports);
-
   const { register, handleSubmit, control } = useForm<Inputs>({
     defaultValues: {
       isRoundTrip: true,
@@ -30,25 +25,19 @@ const BookingForm = () => {
             control={control}
             defaultValue=""
             render={({ field: { value, onChange } }) => (
-              <AutoCompleteInput
-                value={value}
-                onChange={onChange}
-                airports={airports}
-              />
+              <AutoCompleteInput value={value} onChange={onChange} />
             )}
-          />
-          <input
-            {...register('departing')}
-            className="border rounded-md p-1 w-full shadow-md border-gray-100 text-gray-700 outline-pink-200"
-            type="text"
           />
         </div>
         <div className="flex flex-col">
           <label className="text-sm">To</label>
-          <input
-            {...register('destination')}
-            className="border rounded-md p-1 w-full shadow-md border-gray-100 text-gray-700 outline-pink-200"
-            type="text"
+          <Controller
+            name="destination"
+            control={control}
+            defaultValue=""
+            render={({ field: { value, onChange } }) => (
+              <AutoCompleteInput value={value} onChange={onChange} />
+            )}
           />
         </div>
       </div>

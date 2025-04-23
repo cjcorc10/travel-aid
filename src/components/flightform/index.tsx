@@ -6,11 +6,9 @@ import { getFlights } from '../services/flights';
 import Switch from '../switch';
 import AutoCompleteInput from '../autoCompleteInput';
 
-type componentProps = {
-  setData: React.Dispatch<React.SetStateAction<MockResponse | null>>;
-};
+const FlightForm = () => {
+  const [flightData, setData] = useState<MockResponse | null>(null);
 
-const FlightForm = ({ setData }: componentProps) => {
   const navigate = useNavigate();
 
   const { register, handleSubmit, control } = useForm<Inputs>({
@@ -22,10 +20,14 @@ const FlightForm = ({ setData }: componentProps) => {
   // submits collected formData to API
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
     try {
+      // request flights
       const data = await getFlights(formData);
+
+      // set returned flight data to state
       setData(data);
-      console.log(formData);
-      // navigate('/flights', { state: data });
+
+      // navigate to pick flights on /flights and pass returned data
+      navigate('/flights', { state: { data, formData } });
     } catch (error) {
       console.error('Error fetching data', error);
     }

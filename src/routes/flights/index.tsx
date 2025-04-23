@@ -5,14 +5,17 @@ import { useLocation } from 'react-router';
 
 const Flights = () => {
   const location = useLocation();
-  const flightData: Flights = location.state?.body;
+  const flightData: Flights = location.state?.data.body;
+  const requestData: Inputs = location.state?.formData;
+
+  console.log(requestData);
 
   return (
     <div className="w-full h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-22 px-2">
       <BookingForm />
       <FilterFlights />
       {flightData?.departingFlights?.map((flight) => (
-        <FlightCard flight={flight} />
+        <FlightCard flight={flight} key={flight.flightId} />
       ))}
     </div>
   );

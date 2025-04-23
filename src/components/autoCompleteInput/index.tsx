@@ -27,7 +27,6 @@ const AutoCompleteInput = ({ value, onChange }: Props) => {
       setResults([]);
     }
   }, [value]);
-  console.log(results);
 
   return (
     <>
@@ -40,7 +39,7 @@ const AutoCompleteInput = ({ value, onChange }: Props) => {
         className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"
       />
       {results && (
-        <datalist id={value}>
+        <datalist className="bg-white" id={value}>
           {results.map((airport) => (
             <option
               key={airport.code}
