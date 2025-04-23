@@ -6,9 +6,19 @@ import { getFlights } from '../services/flights';
 import Switch from '../switch';
 import AutoCompleteInput from '../autoCompleteInput';
 
+const convertToQueryString = (formData: Inputs) => {
+  const params = new URLSearchParams();
+  (Object.keys(formData) as Array<keyof Inputs>).forEach((key) => {
+    const value = formData[key];
+    if (value !== null && value !== undefined)
+      params.append(key, value.toString());
+    else params.append(key, '');
+  });
+  return params.toString();
+};
+
 const FlightForm = () => {
   const [flightData, setData] = useState<MockResponse | null>(null);
-
   const navigate = useNavigate();
 
   const { register, handleSubmit, control } = useForm<Inputs>({
@@ -20,14 +30,14 @@ const FlightForm = () => {
   // submits collected formData to API
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
     try {
+      const queryString = convertToQueryString(formData);
       // request flights
       const data = await getFlights(formData);
 
       // set returned flight data to state
       setData(data);
-
       // navigate to pick flights on /flights and pass returned data
-      navigate('/flights', { state: { data, formData } });
+      navigate(`/flights?${queryString}`, { state: { data } });
     } catch (error) {
       console.error('Error fetching data', error);
     }

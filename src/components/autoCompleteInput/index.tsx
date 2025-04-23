@@ -35,8 +35,8 @@ const AutoCompleteInput = ({ value, onChange }: Props) => {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         list={value}
-        placeholder="search by city or airport..."
-        className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"
+        placeholder="enter city or airport..."
+        className="border border-gray-300 rounded-lg mb-2 w-full p-1 px-2 shadow-md outline-pink-200"
       />
       {results && (
         <datalist className="bg-white" id={value}>
