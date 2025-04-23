@@ -14,6 +14,7 @@ const convertToQueryString = (formData: Inputs) => {
       params.append(key, value.toString());
     else params.append(key, '');
   });
+  for (const [key, value] of params) console.log(key, value);
   return params.toString();
 };
 
