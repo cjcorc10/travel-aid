@@ -1,7 +1,13 @@
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useContext } from 'react';
+import AutoCompleteInput from '../autoCompleteInput';
+import AirportsContext from '@/contexts/airports';
 
 const BookingForm = () => {
-  const { register, handleSubmit } = useForm<Inputs>({
+  const airports = useContext(AirportsContext);
+  console.log(airports);
+
+  const { register, handleSubmit, control } = useForm<Inputs>({
     defaultValues: {
       isRoundTrip: true,
     },
@@ -19,6 +25,18 @@ const BookingForm = () => {
       <div className="flex gap-4">
         <div className="flex flex-col">
           <label className="text-sm">From</label>
+          <Controller
+            name="departing"
+            control={control}
+            defaultValue=""
+            render={({ field: { value, onChange } }) => (
+              <AutoCompleteInput
+                value={value}
+                onChange={onChange}
+                airports={airports}
+              />
+            )}
+          />
           <input
             {...register('departing')}
             className="border rounded-md p-1 w-full shadow-md border-gray-100 text-gray-700 outline-pink-200"

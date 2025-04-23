@@ -7,11 +7,10 @@ import Switch from '../switch';
 import AutoCompleteInput from '../autoCompleteInput';
 
 type componentProps = {
-  airports: Airport[];
   setData: React.Dispatch<React.SetStateAction<MockResponse | null>>;
 };
 
-const FlightForm = ({ airports, setData }: componentProps) => {
+const FlightForm = ({ setData }: componentProps) => {
   const navigate = useNavigate();
 
   const { register, handleSubmit, control } = useForm<Inputs>({
@@ -51,11 +50,7 @@ const FlightForm = ({ airports, setData }: componentProps) => {
               control={control}
               defaultValue=""
               render={({ field: { onChange, value } }) => (
-                <AutoCompleteInput
-                  value={value}
-                  onChange={onChange}
-                  airports={airports}
-                />
+                <AutoCompleteInput value={value} onChange={onChange} />
               )}
             />
           </div>
@@ -66,11 +61,7 @@ const FlightForm = ({ airports, setData }: componentProps) => {
               control={control}
               defaultValue=""
               render={({ field: { onChange, value } }) => (
-                <AutoCompleteInput
-                  value={value}
-                  onChange={onChange}
-                  airports={airports}
-                />
+                <AutoCompleteInput value={value} onChange={onChange} />
               )}
             />
           </div>
