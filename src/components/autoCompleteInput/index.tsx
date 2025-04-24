@@ -35,6 +35,7 @@ const AutoCompleteInput = ({ value, onChange }: Props) => {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         list={value}
+        required
         placeholder="enter city or airport..."
         className="border border-gray-300 rounded-lg mb-2 w-full p-1 px-2 shadow-md outline-pink-200"
       />

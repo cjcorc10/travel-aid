@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import { MockResponse } from '../../mocks/handlers';
+import { MockResponse } from '@/mocks/handlers';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import { getFlights } from '../services/flights';
@@ -8,23 +8,25 @@ import AutoCompleteInput from '../autoCompleteInput';
 
 const convertToQueryString = (formData: Inputs) => {
   const params = new URLSearchParams();
+  // need to define the keys as keys of Input type because it will implicity type as string and this can't be used to index an object of type Inptus
   (Object.keys(formData) as Array<keyof Inputs>).forEach((key) => {
     const value = formData[key];
-    if (value !== null && value !== undefined)
+    if (value !== null && value !== undefined) {
       params.append(key, value.toString());
-    else params.append(key, '');
+    } else {
+      params.append(key, '');
+    }
   });
-  for (const [key, value] of params) console.log(key, value);
+
   return params.toString();
 };
 
 const FlightForm = () => {
   const [flightData, setData] = useState<MockResponse | null>(null);
+
   const navigate = useNavigate();
 
-  const { register, handleSubmit, control } = useForm<Inputs>({
-    defaultValues: { adults: 1, children: 0 },
-  });
+  const { register, handleSubmit, control } = useForm<Inputs>();
 
   const [roundTrip, setRoundTrip] = useState(true);
 
@@ -32,8 +34,9 @@ const FlightForm = () => {
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
     try {
       const queryString = convertToQueryString(formData);
+
       // request flights
-      const data = await getFlights(formData);
+      const data = await getFlights(queryString);
 
       // set returned flight data to state
       setData(data);
@@ -85,7 +88,7 @@ const FlightForm = () => {
             <input
               aria-label="adults"
               type="number"
-              {...register('adults')}
+              {...(register('adults'), { defaultValue: 1, min: 0, max: 99 })}
               className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-2 shadow-md outline-pink-200"
             />
           </div>
@@ -94,7 +97,7 @@ const FlightForm = () => {
             <input
               aria-label="children"
               type="number"
-              {...register('children')}
+              {...(register('children'), { defaultValue: 0, min: 0, max: 99 })}
               className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-2 shadow-md outline-pink-200"
             />
           </div>
@@ -105,7 +108,7 @@ const FlightForm = () => {
             <input
               aria-label="from"
               type="date"
-              {...register('from')}
+              {...(register('from'), { required: true })}
               className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"
             />
           </div>
@@ -115,7 +118,7 @@ const FlightForm = () => {
               <input
                 aria-label="to"
                 type="date"
-                {...register('to')}
+                {...(register('to'), { required: true })}
                 className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"
               />
             </div>

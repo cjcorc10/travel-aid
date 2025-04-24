@@ -1,11 +1,12 @@
-import FilterFlights from '../../components/filterflights';
-import BookingForm from '../../components/bookingForm';
-import FlightCard from '../../components/flightcard';
+import FilterFlights from '@/components/filterflights';
+import BookingForm from '@/components/bookingForm';
+import FlightCard from '@/components/flightcard';
 import { useLocation } from 'react-router';
 
 const Flights = () => {
   const location = useLocation();
   const flightData: Flights = location.state?.data.body;
+
   // const params = new URLSearchParams(document.location.search);
 
   return (

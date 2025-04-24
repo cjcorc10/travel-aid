@@ -1,7 +1,10 @@
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import AutoCompleteInput from '../autoCompleteInput';
+import { useSearchParams } from 'react-router';
 
 const BookingForm = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const { register, handleSubmit, control } = useForm<Inputs>({
     defaultValues: {
       isRoundTrip: true,
@@ -23,7 +26,7 @@ const BookingForm = () => {
           <Controller
             name="departing"
             control={control}
-            defaultValue=""
+            defaultValue={searchParams.get('departing') || undefined}
             render={({ field: { value, onChange } }) => (
               <AutoCompleteInput value={value} onChange={onChange} />
             )}
@@ -34,7 +37,7 @@ const BookingForm = () => {
           <Controller
             name="destination"
             control={control}
-            defaultValue=""
+            defaultValue={searchParams.get('destination') || undefined}
             render={({ field: { value, onChange } }) => (
               <AutoCompleteInput value={value} onChange={onChange} />
             )}
