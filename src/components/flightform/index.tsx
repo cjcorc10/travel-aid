@@ -1,32 +1,19 @@
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import { MockResponse } from '@/mocks/handlers';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
-import { getFlights } from '../services/flights';
 import Switch from '../switch';
 import AutoCompleteInput from '../autoCompleteInput';
-
-const convertToQueryString = (formData: Inputs) => {
-  const params = new URLSearchParams();
-  // need to define the keys as keys of Input type because it will implicity type as string and this can't be used to index an object of type Inptus
-  (Object.keys(formData) as Array<keyof Inputs>).forEach((key) => {
-    const value = formData[key];
-    if (value !== null && value !== undefined) {
-      params.append(key, value.toString());
-    } else {
-      params.append(key, '');
-    }
-  });
-
-  return params.toString();
-};
+import { convertToQueryString } from '../services/convert';
+import { MockResponse } from '@/mocks/handlers';
 
 const FlightForm = () => {
-  const [flightData, setData] = useState<MockResponse | null>(null);
+  // const [flightData, setData] = useState<MockResponse>();
 
   const navigate = useNavigate();
 
-  const { register, handleSubmit, control } = useForm<Inputs>();
+  const { register, handleSubmit, control } = useForm<Inputs>({
+    defaultValues: { adults: 1, children: 0 },
+  });
 
   const [roundTrip, setRoundTrip] = useState(true);
 
@@ -36,12 +23,12 @@ const FlightForm = () => {
       const queryString = convertToQueryString(formData);
 
       // request flights
-      const data = await getFlights(queryString);
+      // const data = await getFlights(queryString);
 
       // set returned flight data to state
-      setData(data);
+      // setData(data);
       // navigate to pick flights on /flights and pass returned data
-      navigate(`/flights?${queryString}`, { state: { data } });
+      navigate(`/flights?${queryString}`);
     } catch (error) {
       console.error('Error fetching data', error);
     }
@@ -88,7 +75,10 @@ const FlightForm = () => {
             <input
               aria-label="adults"
               type="number"
-              {...(register('adults'), { defaultValue: 1, min: 0, max: 99 })}
+              min={0}
+              max={99}
+              required
+              {...register('adults')}
               className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-2 shadow-md outline-pink-200"
             />
           </div>
@@ -97,7 +87,10 @@ const FlightForm = () => {
             <input
               aria-label="children"
               type="number"
-              {...(register('children'), { defaultValue: 0, min: 0, max: 99 })}
+              min={0}
+              max={99}
+              required
+              {...register('children')}
               className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-2 shadow-md outline-pink-200"
             />
           </div>
@@ -107,8 +100,9 @@ const FlightForm = () => {
             <label className="text-gray-600">Date from</label>
             <input
               aria-label="from"
+              required
               type="date"
-              {...(register('from'), { required: true })}
+              {...register('from')}
               className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"
             />
           </div>
@@ -117,8 +111,9 @@ const FlightForm = () => {
               <label className="text-gray-600">Date to</label>
               <input
                 aria-label="to"
+                required
                 type="date"
-                {...(register('to'), { required: true })}
+                {...register('to')}
                 className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"
               />
             </div>

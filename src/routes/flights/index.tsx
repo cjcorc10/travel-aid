@@ -1,21 +1,52 @@
 import FilterFlights from '@/components/filterflights';
 import BookingForm from '@/components/bookingForm';
 import FlightCard from '@/components/flightcard';
-import { useLocation } from 'react-router';
+import { useSearchParams } from 'react-router';
+import { useEffect, useState } from 'react';
+import { getFlights } from '@/components/services/flights';
 
 const Flights = () => {
-  const location = useLocation();
-  const flightData: Flights = location.state?.data.body;
+  const [flights, setFlights] = useState<Flights>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // const params = new URLSearchParams(document.location.search);
+  // fetch flight data on load and whenever form in <BookingForm/> is submitted. This updates the ticket request
+  useEffect(() => {
+    setIsLoading(true);
+
+    // check to see if we already have this flightData
+    const prevFlight = localStorage.getItem('previous flights');
+    const prevSearch = localStorage.getItem('previous search');
+    if (searchParams.toString() == prevSearch && prevFlight) {
+      setFlights(JSON.parse(prevFlight));
+      console.log('this search was already completed');
+      setIsLoading(false);
+      return;
+    }
+
+    (async () => {
+      const data = await getFlights(searchParams.toString());
+      setFlights(data.body);
+      localStorage.setItem('previous search', searchParams.toString());
+      localStorage.setItem('previous flights', JSON.stringify(data.body));
+      setIsLoading(false);
+    })();
+  }, [searchParams]);
 
   return (
     <div className="w-full h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-22 px-2">
-      <BookingForm />
+      <BookingForm
+        params={searchParams}
+        setParams={(x) => setSearchParams(x)}
+      />
       <FilterFlights />
-      {flightData?.departingFlights?.map((flight) => (
-        <FlightCard flight={flight} key={flight.flightId} />
-      ))}
+      {isLoading ? (
+        <p>loading placeholder...</p>
+      ) : (
+        flights?.departingFlights?.map((flight) => (
+          <FlightCard flight={flight} key={flight.flightId} />
+        ))
+      )}
     </div>
   );
 };

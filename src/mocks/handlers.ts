@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { faker } from '@faker-js/faker';
+import { mock } from 'node:test';
 export interface MockResponse {
   body: Flights;
   error?: string;
@@ -67,7 +68,7 @@ export const handlers = [
     const mockResponse: MockResponse = {
       body: flights,
     };
-
+    setTimeout(() => null, 3000);
     return HttpResponse.json(mockResponse, { status: 200 });
   }),
 ];

@@ -1,18 +1,20 @@
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import AutoCompleteInput from '../autoCompleteInput';
-import { useSearchParams } from 'react-router';
+import { convertToQueryString } from '../services/convert';
+import { SetURLSearchParams } from 'react-router';
 
-const BookingForm = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+type componentProps = {
+  params: URLSearchParams;
+  setParams: SetURLSearchParams;
+};
 
-  const { register, handleSubmit, control } = useForm<Inputs>({
-    defaultValues: {
-      isRoundTrip: true,
-    },
-  });
+const BookingForm = ({ params, setParams }: componentProps) => {
+  const { register, handleSubmit, control } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (formData) => {
-    console.log(formData);
+    const newParams = convertToQueryString(formData);
+    // triggers useEffect in callee component <Flights/>
+    setParams(newParams);
   };
 
   return (
@@ -26,7 +28,7 @@ const BookingForm = () => {
           <Controller
             name="departing"
             control={control}
-            defaultValue={searchParams.get('departing') || undefined}
+            defaultValue={params.get('departing') || undefined}
             render={({ field: { value, onChange } }) => (
               <AutoCompleteInput value={value} onChange={onChange} />
             )}
@@ -37,7 +39,7 @@ const BookingForm = () => {
           <Controller
             name="destination"
             control={control}
-            defaultValue={searchParams.get('destination') || undefined}
+            defaultValue={params.get('destination') || undefined}
             render={({ field: { value, onChange } }) => (
               <AutoCompleteInput value={value} onChange={onChange} />
             )}
