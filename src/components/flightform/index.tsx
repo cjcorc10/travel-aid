@@ -4,13 +4,9 @@ import { useState } from 'react';
 import Switch from '../switch';
 import AutoCompleteInput from '../autoCompleteInput';
 import { convertToQueryString } from '../services/convert';
-import { MockResponse } from '@/mocks/handlers';
 
 const FlightForm = () => {
-  // const [flightData, setData] = useState<MockResponse>();
-
   const navigate = useNavigate();
-
   const { register, handleSubmit, control } = useForm<Inputs>({
     defaultValues: { adults: 1, children: 0 },
   });
@@ -19,19 +15,8 @@ const FlightForm = () => {
 
   // submits collected formData to API
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
-    try {
-      const queryString = convertToQueryString(formData);
-
-      // request flights
-      // const data = await getFlights(queryString);
-
-      // set returned flight data to state
-      // setData(data);
-      // navigate to pick flights on /flights and pass returned data
-      navigate(`/flights?${queryString}`);
-    } catch (error) {
-      console.error('Error fetching data', error);
-    }
+    const queryString = convertToQueryString(formData);
+    navigate(`/flights?${queryString}`);
   };
 
   return (

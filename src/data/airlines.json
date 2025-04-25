@@ -1,0 +1,262 @@
+[
+  {
+    "name": "American Airlines",
+    "iataCode": "AA",
+    "country": "United States"
+  },
+  {
+    "name": "Air Berlin",
+    "iataCode": "AB",
+    "country": "Germany"
+  },
+  {
+    "name": "Air Canada",
+    "iataCode": "AC",
+    "country": "Canada"
+  },
+  {
+    "name": "Air France",
+    "iataCode": "AF",
+    "country": "France"
+  },
+  {
+    "name": "Air India",
+    "iataCode": "AI",
+    "country": "India"
+  },
+  {
+    "name": "Aeroméxico",
+    "iataCode": "AM",
+    "country": "Mexico"
+  },
+  {
+    "name": "Alaska Airlines",
+    "iataCode": "AS",
+    "country": "United States"
+  },
+  {
+    "name": "Royal Air Maroc",
+    "iataCode": "AT",
+    "country": "Morocco"
+  },
+  {
+    "name": "Alitalia",
+    "iataCode": "AZ",
+    "country": "Italy"
+  },
+  {
+    "name": "British Airways",
+    "iataCode": "BA",
+    "country": "United Kingdom"
+  },
+  {
+    "name": "French Bee",
+    "iataCode": "BF",
+    "country": "France"
+  },
+  {
+    "name": "TUI Airways",
+    "iataCode": "BY",
+    "country": "United Kingdom"
+  },
+  {
+    "name": "Chalair Aviation",
+    "iataCode": "CE",
+    "country": "France"
+  },
+  {
+    "name": "China Southern Airlines",
+    "iataCode": "CZ",
+    "country": "China"
+  },
+  {
+    "name": "Condor",
+    "iataCode": "DE",
+    "country": "Germany"
+  },
+  {
+    "name": "Delta Air Lines",
+    "iataCode": "DL",
+    "country": "United States"
+  },
+  {
+    "name": "TAAG Angola Airlines",
+    "iataCode": "DT",
+    "country": "Angola"
+  },
+  {
+    "name": "Emirates",
+    "iataCode": "EK",
+    "country": "United Arab Emirates"
+  },
+  {
+    "name": "Ethiopian Airlines",
+    "iataCode": "ET",
+    "country": "Ethiopia"
+  },
+  {
+    "name": "Eurowings",
+    "iataCode": "EW",
+    "country": "Germany"
+  },
+  {
+    "name": "Etihad Airways",
+    "iataCode": "EY",
+    "country": "United Arab Emirates"
+  },
+  {
+    "name": "Flydubai",
+    "iataCode": "FZ",
+    "country": "United Arab Emirates"
+  },
+  {
+    "name": "GOL Linhas Aéreas",
+    "iataCode": "G3",
+    "country": "Brazil"
+  },
+  {
+    "name": "Air Arabia",
+    "iataCode": "G9",
+    "country": "United Arab Emirates"
+  },
+  {
+    "name": "Iberia",
+    "iataCode": "IB",
+    "country": "Spain"
+  },
+  {
+    "name": "Japan Airlines",
+    "iataCode": "JL",
+    "country": "Japan"
+  },
+  {
+    "name": "Jetstar Airways",
+    "iataCode": "JQ",
+    "country": "Australia"
+  },
+  {
+    "name": "Korean Air",
+    "iataCode": "KE",
+    "country": "South Korea"
+  },
+  {
+    "name": "Kenya Airways",
+    "iataCode": "KQ",
+    "country": "Kenya"
+  },
+  {
+    "name": "LATAM Airlines",
+    "iataCode": "LA",
+    "country": "Chile"
+  },
+  {
+    "name": "Lufthansa",
+    "iataCode": "LH",
+    "country": "Germany"
+  },
+  {
+    "name": "Jet2",
+    "iataCode": "LS",
+    "country": "United Kingdom"
+  },
+  {
+    "name": "El Al",
+    "iataCode": "LY",
+    "country": "Israel"
+  },
+  {
+    "name": "EgyptAir",
+    "iataCode": "MS",
+    "country": "Egypt"
+  },
+  {
+    "name": "Air New Zealand",
+    "iataCode": "NZ",
+    "country": "New Zealand"
+  },
+  {
+    "name": "Qantas",
+    "iataCode": "QF",
+    "country": "Australia"
+  },
+  {
+    "name": "Alliance Airlines",
+    "iataCode": "QQ",
+    "country": "Australia"
+  },
+  {
+    "name": "Qatar Airways",
+    "iataCode": "QR",
+    "country": "Qatar"
+  },
+  {
+    "name": "Ras Al Khaimah Airways",
+    "iataCode": "RT",
+    "country": "United Arab Emirates"
+  },
+  {
+    "name": "South African Airways",
+    "iataCode": "SA",
+    "country": "South Africa"
+  },
+  {
+    "name": "Singapore Airlines",
+    "iataCode": "SQ",
+    "country": "Singapore"
+  },
+  {
+    "name": "Corsair International",
+    "iataCode": "SS",
+    "country": "France"
+  },
+  {
+    "name": "Aeroflot",
+    "iataCode": "SU",
+    "country": "Russia"
+  },
+  {
+    "name": "Saudi Arabian Airlines",
+    "iataCode": "SV",
+    "country": "Saudi Arabia"
+  },
+  {
+    "name": "Turkish Airlines",
+    "iataCode": "TK",
+    "country": "Turkey"
+  },
+  {
+    "name": "easyJet",
+    "iataCode": "U2",
+    "country": "United Kingdom"
+  },
+  {
+    "name": "United Airlines",
+    "iataCode": "UA",
+    "country": "United States"
+  },
+  {
+    "name": "Virgin Australia",
+    "iataCode": "VA",
+    "country": "Australia"
+  },
+  {
+    "name": "Virgin Atlantic",
+    "iataCode": "VS",
+    "country": "United Kingdom"
+  },
+  {
+    "name": "Southwest Airlines",
+    "iataCode": "WN",
+    "country": "United States"
+  },
+  {
+    "name": "TUI fly Deutschland",
+    "iataCode": "X3",
+    "country": "Germany"
+  },
+  {
+    "name": "Rex Airlines",
+    "iataCode": "ZL",
+    "country": "Australia"
+  }
+]

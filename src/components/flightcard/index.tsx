@@ -12,6 +12,7 @@ type Flight = {
 };
 
 const FlightCard = ({ flight }: { flight: Flight }) => {
+  console.log(flight);
   return (
     <div
       className="bg-white mt-2 border border-gray-100 shadow-md rounded-md py-2 px-4 font-montserrat flex flex-col gap-4"
@@ -46,12 +47,14 @@ const FlightCard = ({ flight }: { flight: Flight }) => {
       </div>
       <div className="flex  items-center gap-4 justify-center bg-gray-50 rounded-md p-2">
         <div>
-          <h3 className="text-3xl font-bold font-vice">8:00</h3>
+          <h3 className="text-3xl font-bold font-vice">
+            {flight.departureTime}
+          </h3>
           <p className="text-sm text-gray-500 text-center">{flight.origin}</p>
         </div>
         <MoveRight size={32} color="pink" />
         <div>
-          <h3 className="text-3xl font-bold font-vice">11:30</h3>
+          <h3 className="text-3xl font-bold font-vice">{flight.arrivalTime}</h3>
           <p className="text-sm text-gray-500 text-center">
             {flight.destination}
           </p>

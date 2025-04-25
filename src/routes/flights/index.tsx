@@ -4,13 +4,14 @@ import FlightCard from '@/components/flightcard';
 import { useSearchParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { getFlights } from '@/components/services/flights';
+import { motion } from 'motion/react';
 
 const Flights = () => {
   const [flights, setFlights] = useState<Flights>();
   const [isLoading, setIsLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // fetch flight data on load and whenever form in <BookingForm/> is submitted. This updates the ticket request
+  // fetch flight data and set as state for render
   useEffect(() => {
     setIsLoading(true);
 
@@ -19,11 +20,11 @@ const Flights = () => {
     const prevSearch = localStorage.getItem('previous search');
     if (searchParams.toString() == prevSearch && prevFlight) {
       setFlights(JSON.parse(prevFlight));
-      console.log('this search was already completed');
       setIsLoading(false);
       return;
     }
 
+    // fetch new flight data
     (async () => {
       const data = await getFlights(searchParams.toString());
       setFlights(data.body);
@@ -41,10 +42,22 @@ const Flights = () => {
       />
       <FilterFlights />
       {isLoading ? (
+        // Insert Shadcn skeleton here
         <p>loading placeholder...</p>
       ) : (
-        flights?.departingFlights?.map((flight) => (
-          <FlightCard flight={flight} key={flight.flightId} />
+        flights?.departingFlights?.map((flight, idx) => (
+          <motion.div
+            key={flight.flightId}
+            initial={{ opacity: 0, translateY: '20px' }}
+            whileInView={{ opacity: 1, translateY: 0 }}
+            viewport={{ once: true }}
+            transition={{
+              delay: idx < 3 ? (idx % 3) * 0.2 : 0.2,
+              duration: 0.5,
+            }}
+          >
+            <FlightCard flight={flight} />
+          </motion.div>
         ))
       )}
     </div>

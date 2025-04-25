@@ -15,12 +15,13 @@ const AutoCompleteInput = ({ value, onChange }: Props) => {
   // search for airport each time letter is typed in input
   useEffect(() => {
     if (value.length > 2) {
+      console.log('tesfklasdfklajsdfkl;asdj;kj');
       const locations = context?.airports?.filter((airport) =>
         `${airport.airport} ${airport.city} ${airport.code}`
           .toLowerCase()
           .includes(value.toLowerCase())
       );
-
+      console.log(context);
       // only return 10 entries max
       locations ? setResults(locations.slice(0, 9)) : setResults([]);
     } else {

@@ -11,7 +11,7 @@ const App = () => {
   // fetch all airport data, this will set the context when fetched
   useEffect(() => {
     (async () => {
-      const response = await fetch('/data/airports.json');
+      const response = await fetch('src/data/airports.json');
       const data = await response.json();
       setAirports(data);
       setIsLoading(false);
