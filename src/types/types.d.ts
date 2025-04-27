@@ -31,3 +31,8 @@ type Airport = {
   longitude: number;
   latitude: number;
 };
+
+type Coordinate = {
+  longitude: number;
+  latitude: number;
+};

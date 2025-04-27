@@ -1,4 +1,4 @@
-import { Ghost, MoveRight, Clock } from 'lucide-react';
+import { Plane, MoveRight, Clock } from 'lucide-react';
 
 type Flight = {
   flightId: string;
@@ -12,7 +12,6 @@ type Flight = {
 };
 
 const FlightCard = ({ flight }: { flight: Flight }) => {
-  console.log(flight);
   return (
     <div
       className="bg-white mt-2 border border-gray-100 shadow-md rounded-md py-2 px-4 font-montserrat flex flex-col gap-4"
@@ -20,7 +19,7 @@ const FlightCard = ({ flight }: { flight: Flight }) => {
     >
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row items-center">
-          <Ghost className="mr-4" />
+          <Plane className="mr-4" />
           <div>
             <h3 className="font-bold text-xl leading-5">{flight.airline}</h3>
             <p className="text-gray-500 text-sm leading-none">
@@ -37,7 +36,6 @@ const FlightCard = ({ flight }: { flight: Flight }) => {
           </p>
         </div>
       </div>
-
       <div className="text-sm flex gap-6">
         <p className="border rounded-full px-2 w-min">placeholder</p>
         <div className="flex items-center">

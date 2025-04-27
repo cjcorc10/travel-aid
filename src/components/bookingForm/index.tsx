@@ -50,6 +50,7 @@ const BookingForm = ({ params, setParams }: componentProps) => {
         <label className="text-sm">Departure date</label>
         <input
           {...register('from')}
+          defaultValue={params.get('from') || ''}
           className="border rounded-md p-1 w-full shadow-md border-gray-100 text-gray-700 outline-pink-200"
           type="date"
         />
