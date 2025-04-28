@@ -27,6 +27,7 @@ const getAirportByCode = (iata: string) => {
   return result;
 };
 
+
 const generateFlight = (params: URL, duration: number) => {
   // get airport codes for origin and destination
   const origin = params.searchParams.get('departing') || '';
@@ -69,20 +70,37 @@ const generateFlight = (params: URL, duration: number) => {
 
   let departingMinute = minute;
   
+  /*
+  // TEMPORARY
+  */
+
+  // get origin & destination airports
+  const originAirport = getAirportByCode(
+    params.searchParams.get('departing')?.slice(0, 3) || ''
+  );
+  const destinationAirport = getAirportByCode(
+    params.searchParams.get('destination')?.slice(0, 3) || ''
+  );
+
+  const timeZoneDiff = originAirport.timezone - destinationAirport.timezone
+
+ 
+
+
   // MAKE A FUNCTION FOR CONVERTING MILITARY TO STANDARD TIME
   // calculate arrivaltime
   // get hours and minutes from duration
   const durationHour = Math.floor(duration) + layoverHour
   const durationMinutes = Math.floor((duration % 1) * 60) + layoverMin;
 
-  let arrivalMin = minute + durationMinutes;
+  let arrivalMin = minute + durationMinutes ;
   while ( arrivalMin > 59) {
     arrivalMin = arrivalMin - 60 ;
     hour++;
   }
 
   let pm = false;
-  let arrivalHour = hour + durationHour;
+  let arrivalHour = hour + durationHour - timeZoneDiff;
   while (arrivalHour > 12) {
     if (arrivalHour > 24) {
       arrivalHour -= 24
@@ -92,6 +110,9 @@ const generateFlight = (params: URL, duration: number) => {
     }
   }
 
+
+
+
   return {
     flightId: `${faker.string.alphanumeric({ length: 6, casing: 'lower' })}`,
     flightNumber: `${airline.iataCode}${faker.airline.flightNumber({ addLeadingZeros: true })}`,
@@ -99,8 +120,8 @@ const generateFlight = (params: URL, duration: number) => {
     origin: `${originCode}`,
     destination: `${destinationCode}`,
     departureTime: `${departingHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}${departPm ? 'pm' : 'am'}`,
-    duration: `${durationHour}h ${durationMinutes}m`,
-    arrivalTime: `${arrivalHour.toString().padStart(2, '0')}:${arrivalMin.toString().padStart(2, '0')}`,
+    duration: `${durationHour}h ${durationMinutes % 60}m`,
+    arrivalTime: `${arrivalHour.toString().padStart(2, '0')}:${arrivalMin.toString().padStart(2, '0')}${pm ? 'pm': 'am'}`,
     pricePerPassenger: 100.0,
     layovers
   };
