@@ -47,7 +47,6 @@ const generateFlight = (params: URL, duration: number) => {
 
   // MAKE A FUNCTION FOR CONVERTING MILITARY TO STANDARD TIME
   // calculate arrivaltime
-  let pm = false;
   const durationHour = Math.floor(duration);
   const durationMinutes = Math.floor((duration % 1) * 60);
 
@@ -60,11 +59,12 @@ const generateFlight = (params: URL, duration: number) => {
   let arrivalHour = hour + durationHour;
   while (arrivalHour > 12) {
     if (arrivalHour > 24) {
+      console.log(`arrivalhour is ${arrivalHour}`);
       arrivalHour = arrivalHour % 24;
     } else if (arrivalHour > 12) {
       arrivalHour = arrivalHour % 13;
       arrivalHour++;
-      pm = true;
+      console.log(`arrival hour over 12: ${arrivalHour}`);
     }
   }
 
@@ -109,7 +109,7 @@ export const handlers = [
 
     const flights: Flights = {
       roundTrip: false,
-      departingFlights: Array.from(new Array(24), (x) =>
+      departingFlights: Array.from(new Array(6), (x) =>
         generateFlight(url, time)
       ),
       totalPassengers: 1,
