@@ -17,6 +17,7 @@ type Flights = {
     origin: string;
     destination: string;
     departureTime: string;
+    duration: string;
     arrivalTime: string;
     pricePerPassenger: number;
   }[];

@@ -40,7 +40,7 @@ const FlightCard = ({ flight }: { flight: Flight }) => {
         <p className="border rounded-full px-2 w-min">placeholder</p>
         <div className="flex items-center">
           <Clock size={14} className="mr-1" />
-          <p className="text-gray-500">3h 30m</p>
+          <p className="text-gray-500">{flight.duration}</p>
         </div>
       </div>
       <div className="flex  items-center gap-4 justify-center bg-gray-50 rounded-md p-2">

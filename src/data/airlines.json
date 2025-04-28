@@ -10,6 +10,16 @@
     "country": "Germany"
   },
   {
+    "name": "Frontier",
+    "iataCode": "F9",
+    "country": "United States"
+  },
+  {
+    "name": "Spirit",
+    "iataCode": "NK",
+    "country": "United States"
+  },
+  {
     "name": "Air Canada",
     "iataCode": "AC",
     "country": "Canada"
