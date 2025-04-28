@@ -39,6 +39,18 @@ const generateFlight = (params: URL, duration: number) => {
   const airline = getAirlineByCountry(origin);
 
   // get layovers
+  let layovers = Math.floor(Math.random() * 3)
+  if(duration > 9) layovers++
+
+  
+  let layoverHour = (Math.random() * 4) * layovers
+  let layoverMin = Math.floor((layoverHour % 1) * 60)
+  while(layoverMin > 59) {
+    layoverMin -= 60
+    layoverHour++
+  }
+  console.log(layoverMin)
+  layoverHour = Math.floor(layoverHour)
 
   // get cost
 
@@ -47,24 +59,25 @@ const generateFlight = (params: URL, duration: number) => {
 
   // MAKE A FUNCTION FOR CONVERTING MILITARY TO STANDARD TIME
   // calculate arrivaltime
-  const durationHour = Math.floor(duration);
+  // get hours and minutes from duration
+  const durationHour = Math.floor(duration) + layoverHour
   const durationMinutes = Math.floor((duration % 1) * 60);
 
-  let arrivalMin = minute + durationMinutes;
-  if (arrivalMin > 60) {
-    arrivalMin = arrivalMin % 60;
+  let arrivalMin = minute + durationMinutes + layoverMin;
+  while ( arrivalMin > 59) {
+    arrivalMin = arrivalMin - 60 ;
     hour++;
   }
 
+  let pm = false;
   let arrivalHour = hour + durationHour;
   while (arrivalHour > 12) {
     if (arrivalHour > 24) {
-      console.log(`arrivalhour is ${arrivalHour}`);
-      arrivalHour = arrivalHour % 24;
-    } else if (arrivalHour > 12) {
-      arrivalHour = arrivalHour % 13;
+      arrivalHour -= 24
+    } else {
+      arrivalHour = arrivalHour -= 12;
       arrivalHour++;
-      console.log(`arrival hour over 12: ${arrivalHour}`);
+      pm = true;
     }
   }
 
@@ -78,6 +91,7 @@ const generateFlight = (params: URL, duration: number) => {
     duration: `${durationHour}h ${durationMinutes}m`,
     arrivalTime: `${arrivalHour.toString().padStart(2, '0')}:${arrivalMin.toString().padStart(2, '0')}`,
     pricePerPassenger: 100.0,
+    layovers
   };
 };
 

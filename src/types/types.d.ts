@@ -19,6 +19,7 @@ type Flights = {
     departureTime: string;
     duration: string;
     arrivalTime: string;
+    layovers: number;
     pricePerPassenger: number;
   }[];
   totalPassengers: number;
