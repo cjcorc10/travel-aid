@@ -40,18 +40,20 @@ const generateFlight = (params: URL, duration: number) => {
 
   // get layovers
   let layovers = Math.floor(Math.random() * 3)
+  // if flight exceeds 9 hours increment layovers
   if(duration > 9) layovers++
 
   
   let layoverHour = (Math.random() * 4) * layovers
+  console.log(layoverHour)
   let layoverMin = Math.floor((layoverHour % 1) * 60)
   while(layoverMin > 59) {
     layoverMin -= 60
     layoverHour++
   }
-  console.log(layoverMin)
-  layoverHour = Math.floor(layoverHour)
 
+  layoverHour = Math.floor(layoverHour)
+  console.log(`Total layover time: ${layoverHour}h ${layoverMin}min`)
   // get cost
 
   // get departure time
@@ -61,9 +63,9 @@ const generateFlight = (params: URL, duration: number) => {
   // calculate arrivaltime
   // get hours and minutes from duration
   const durationHour = Math.floor(duration) + layoverHour
-  const durationMinutes = Math.floor((duration % 1) * 60);
+  const durationMinutes = Math.floor((duration % 1) * 60) + layoverMin;
 
-  let arrivalMin = minute + durationMinutes + layoverMin;
+  let arrivalMin = minute + durationMinutes;
   while ( arrivalMin > 59) {
     arrivalMin = arrivalMin - 60 ;
     hour++;
