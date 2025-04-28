@@ -45,7 +45,7 @@ const generateFlight = (params: URL, duration: number) => {
 
   
   let layoverHour = (Math.random() * 4) * layovers
-  console.log(layoverHour)
+
   let layoverMin = Math.floor((layoverHour % 1) * 60)
   while(layoverMin > 59) {
     layoverMin -= 60
@@ -59,6 +59,16 @@ const generateFlight = (params: URL, duration: number) => {
   // get departure time
   let [hour, minute] = generateRandomTime(6, 23);
 
+  let departPm = false;
+  let departingHour = hour;
+  if(departingHour > 12) {
+    departingHour -= 12
+    departPm = true;
+  } else if (departingHour === 12)
+    departPm = true;
+
+  let departingMinute = minute;
+  
   // MAKE A FUNCTION FOR CONVERTING MILITARY TO STANDARD TIME
   // calculate arrivaltime
   // get hours and minutes from duration
@@ -88,7 +98,7 @@ const generateFlight = (params: URL, duration: number) => {
     airline: `${airline.name}`,
     origin: `${originCode}`,
     destination: `${destinationCode}`,
-    departureTime: `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`,
+    departureTime: `${departingHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}${departPm ? 'pm' : 'am'}`,
     duration: `${durationHour}h ${durationMinutes}m`,
     arrivalTime: `${arrivalHour.toString().padStart(2, '0')}:${arrivalMin.toString().padStart(2, '0')}`,
     pricePerPassenger: 100.0,
