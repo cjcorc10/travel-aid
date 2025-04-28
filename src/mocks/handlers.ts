@@ -75,8 +75,7 @@ const generateFlight = (params: URL, duration: number) => {
     if (arrivalHour > 24) {
       arrivalHour -= 24
     } else {
-      arrivalHour = arrivalHour -= 12;
-      arrivalHour++;
+      arrivalHour -= 12;
       pm = true;
     }
   }

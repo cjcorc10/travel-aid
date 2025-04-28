@@ -39,7 +39,7 @@ const FlightCard = ({ flight }: { flight: Flight }) => {
         </div>
       </div>
       <div className="text-sm flex gap-6">
-        <p className="border rounded-full px-2 w-min">{flight.layovers}</p>
+        <p className="border rounded-full px-2 bg-black text-white font-bold">{flight.layovers > 0 ?`${flight.layovers} layover(s)` : `direct flight`}</p>
         <div className="flex items-center">
           <Clock size={14} className="mr-1" />
           <p className="text-gray-500">{flight.duration}</p>
