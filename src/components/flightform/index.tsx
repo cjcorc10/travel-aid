@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import Switch from '../switch';
 import AutoCompleteInput from '../autoCompleteInput';
-import { convertToQueryString } from '../services/convert';
+import { convertToQueryString } from '../../services/convert';
 
 const FlightForm = () => {
   const navigate = useNavigate();

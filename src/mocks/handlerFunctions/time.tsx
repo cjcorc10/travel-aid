@@ -45,3 +45,18 @@ export const convertFromMilitary = (hour: number, minute: number = 0) => {
   }
   return [hour, pm];
 };
+
+
+const convertDecimalToTime = (duration: number) => {
+  const hours = Math.floor(duration);
+  const minutes = Math.floor((duration % 1) * 60);
+  return [hours, minutes];
+};
+
+// calculate total duration of flights & layovers, return hours and minutes
+export const getFlightDuration = (layovers: number, duration: number) => {
+  // get layover duration
+  const layoverHours = Math.random() * 4 * layovers;
+  const totalDuration = layoverHours + duration;
+  return convertDecimalToTime(totalDuration);
+};

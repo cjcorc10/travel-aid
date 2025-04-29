@@ -1,55 +1,21 @@
 import { http, HttpResponse, delay } from 'msw';
 import { faker } from '@faker-js/faker';
-import airlines from '@/data/airlines.json';
-import airports from '@/data/airports.json';
 import {
   timeToTravel,
   generateRandomTime,
-  convertFromMilitary,
-} from '@/components/services/time';
+  convertFromMilitary, 
+  getFlightDuration
+} from '@/mocks/handlerFunctions/time';
+import { 
+  getAirlineByCountry, 
+  getAirportByCode, 
+  getLayovers  } from './handlerFunctions/flightInfo';
 export interface MockResponse {
-  body: Flights;
+  body?: Flights;
   error?: string;
 }
 
-// parses country from input and selects an airline or generates a fake one
-const getAirlineByCountry = (airport: string) => {
-  const country = airport.split(', ')[3];
 
-  const returnedAirlines = airlines.filter(
-    (airline) => airline.country.toLowerCase() === country.toLowerCase()
-  );
-
-  if (returnedAirlines.length === 0) return faker.airline.airline();
-
-  const random = Math.floor(Math.random() * returnedAirlines.length);
-  return returnedAirlines[random];
-};
-
-const getAirportByCode = (iata: string) => {
-  const result = airports.filter((airport) => airport.code === iata)[0];
-  return result;
-};
-
-const getLayovers = (duration: number) => {
-  let layovers: number = Math.floor(Math.random() * 3);
-  duration > 8 && layovers++;
-  return layovers;
-};
-
-// calculate total duration of flights & layovers, return hours and minutes
-const getFlightDuration = (layovers: number, duration: number) => {
-  // get layover duration
-  const layoverHours = Math.random() * 4 * layovers;
-  const totalDuration = layoverHours + duration;
-  return convertDecimalToTime(totalDuration);
-};
-
-const convertDecimalToTime = (duration: number) => {
-  const hours = Math.floor(duration);
-  const minutes = Math.floor((duration % 1) * 60);
-  return [hours, minutes];
-};
 
 const generateFlight = (params: URL, duration: number) => {
   /**
@@ -96,16 +62,17 @@ const generateFlight = (params: URL, duration: number) => {
   arrivalMin %= 60;
 
   return {
-    flightId: `${faker.string.alphanumeric({ length: 6, casing: 'lower' })}`,
+    flightId: faker.string.alphanumeric({ length: 6, casing: 'lower' }),
     flightNumber: `${airline.iataCode}${faker.airline.flightNumber({ addLeadingZeros: true })}`,
-    airline: `${airline.name}`,
-    origin: `${originCode}`,
-    destination: `${destinationCode}`,
+    airline: airline.name,
+    origin: originCode,
+    destination: destinationCode,
     departureTime: `${departureHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}${departurePM ? 'pm' : 'am'}`,
     duration: `${totalHours}h ${totalMins % 60}m`,
     arrivalTime: `${finalArrive.toString().padStart(2, '0')}:${arrivalMin.toString().padStart(2, '0')}${arrivePM ? 'pm' : 'am'}`,
-    pricePerPassenger: `${price.toFixed(0)}.99`,
     layovers,
+    pricePerPassenger: `${price.toFixed(0)}.00`,
+
   };
 };
 
@@ -133,11 +100,9 @@ export const handlers = [
       }
     );
 
-    console.log(time);
-
     const flights: Flights = {
       roundTrip: false,
-      departingFlights: Array.from(new Array(6), (x) =>
+      departingFlights: Array.from(new Array(6), () =>
         generateFlight(url, time)
       ),
       totalPassengers: 1,

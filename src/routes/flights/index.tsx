@@ -3,8 +3,9 @@ import BookingForm from '@/components/bookingForm';
 import FlightCard from '@/components/flightcard';
 import { useSearchParams } from 'react-router';
 import { useEffect, useState } from 'react';
-import { getFlights } from '@/components/services/flights';
+import { getFlights } from '@/services/flights';
 import { motion } from 'motion/react';
+import { LoaderCircle } from 'lucide-react';
 
 const Flights = () => {
   const [flights, setFlights] = useState<Flights>();
@@ -43,7 +44,10 @@ const Flights = () => {
       <FilterFlights />
       {isLoading ? (
         // Insert Shadcn skeleton here
-        <p>loading placeholder...</p>
+        <div className='flex justify-center p-12'>
+        <LoaderCircle size={48} color={'green'} className='animate-spin'/>
+        </div>
+      
       ) : (
         flights?.departingFlights?.map((flight, idx) => (
           <motion.div
