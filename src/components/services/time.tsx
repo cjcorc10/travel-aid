@@ -2,7 +2,6 @@ export const generateRandomTime = (start: number, end: number) => {
   let hour = Math.floor(Math.random() * (end - start)) + start;
   const minute = Math.floor(Math.random() * 4) * 15;
   return [hour, minute];
-  //   return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
 };
 
 export const timeToTravel = (start: Coordinate, end: Coordinate) => {
@@ -29,4 +28,20 @@ export const timeToTravel = (start: Coordinate, end: Coordinate) => {
 
   // Calculate time (distance / speed)
   return distance / 800;
+};
+
+export const convertFromMilitary = (hour: number, minute: number = 0) => {
+  let pm = false;
+  while (minute > 59) {
+    minute -= 59;
+    hour++;
+  }
+  while (hour > 12) {
+    if (hour > 24) hour -= 24;
+    else {
+      hour -= 12;
+      pm = true;
+    }
+  }
+  return [hour, pm];
 };

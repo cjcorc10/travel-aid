@@ -2,7 +2,11 @@ import { http, HttpResponse, delay } from 'msw';
 import { faker } from '@faker-js/faker';
 import airlines from '@/data/airlines.json';
 import airports from '@/data/airports.json';
-import { timeToTravel, generateRandomTime } from '@/components/services/time';
+import {
+  timeToTravel,
+  generateRandomTime,
+  convertFromMilitary,
+} from '@/components/services/time';
 export interface MockResponse {
   body: Flights;
   error?: string;
@@ -27,8 +31,34 @@ const getAirportByCode = (iata: string) => {
   return result;
 };
 
+const getLayovers = (duration: number) => {
+  let layovers: number = Math.floor(Math.random() * 3);
+  duration > 8 && layovers++;
+  return layovers;
+};
+
+// calculate total duration of flights & layovers, return hours and minutes
+const getFlightDuration = (layovers: number, duration: number) => {
+  // get layover duration
+  const layoverHours = Math.random() * 4 * layovers;
+  const totalDuration = layoverHours + duration;
+  return convertDecimalToTime(totalDuration);
+};
+
+const convertDecimalToTime = (duration: number) => {
+  const hours = Math.floor(duration);
+  const minutes = Math.floor((duration % 1) * 60);
+  return [hours, minutes];
+};
 
 const generateFlight = (params: URL, duration: number) => {
+  /**
+   * Calculate price
+   * adults - 100%
+   * kids - 70%
+   */
+  const price = duration * 45 + Math.random() * 2 * 100;
+
   // get airport codes for origin and destination
   const origin = params.searchParams.get('departing') || '';
   const originCode = origin.slice(0, 3);
@@ -39,79 +69,31 @@ const generateFlight = (params: URL, duration: number) => {
   // generate alirline based on code
   const airline = getAirlineByCountry(origin);
 
-  // get layovers
-  let layovers = Math.floor(Math.random() * 3)
-  // if flight exceeds 9 hours increment layovers
-  if(duration > 9) layovers++
+  // total travel time
+  const layovers = getLayovers(duration);
+  const [totalHours, totalMins] = getFlightDuration(layovers, duration);
 
-  
-  let layoverHour = (Math.random() * 4) * layovers
-
-  let layoverMin = Math.floor((layoverHour % 1) * 60)
-  while(layoverMin > 59) {
-    layoverMin -= 60
-    layoverHour++
-  }
-
-  layoverHour = Math.floor(layoverHour)
-  console.log(`Total layover time: ${layoverHour}h ${layoverMin}min`)
-  // get cost
-
-  // get departure time
+  // departure time
   let [hour, minute] = generateRandomTime(6, 23);
+  const [departureHour, departurePM] = convertFromMilitary(hour);
 
-  let departPm = false;
-  let departingHour = hour;
-  if(departingHour > 12) {
-    departingHour -= 12
-    departPm = true;
-  } else if (departingHour === 12)
-    departPm = true;
-
-  let departingMinute = minute;
-  
-  /*
-  // TEMPORARY
-  */
-
-  // get origin & destination airports
+  // calculate timezone difference
   const originAirport = getAirportByCode(
     params.searchParams.get('departing')?.slice(0, 3) || ''
   );
   const destinationAirport = getAirportByCode(
     params.searchParams.get('destination')?.slice(0, 3) || ''
   );
+  const timeZoneDiff =
+    originAirport.timezone && destinationAirport.timezone
+      ? originAirport.timezone - destinationAirport.timezone
+      : 0;
 
-  const timeZoneDiff = originAirport.timezone - destinationAirport.timezone
-
- 
-
-
-  // MAKE A FUNCTION FOR CONVERTING MILITARY TO STANDARD TIME
-  // calculate arrivaltime
-  // get hours and minutes from duration
-  const durationHour = Math.floor(duration) + layoverHour
-  const durationMinutes = Math.floor((duration % 1) * 60) + layoverMin;
-
-  let arrivalMin = minute + durationMinutes ;
-  while ( arrivalMin > 59) {
-    arrivalMin = arrivalMin - 60 ;
-    hour++;
-  }
-
-  let pm = false;
-  let arrivalHour = hour + durationHour - timeZoneDiff;
-  while (arrivalHour > 12) {
-    if (arrivalHour > 24) {
-      arrivalHour -= 24
-    } else {
-      arrivalHour -= 12;
-      pm = true;
-    }
-  }
-
-
-
+  // arrival time
+  let arrivalHour = hour + totalHours - timeZoneDiff;
+  let arrivalMin = minute + totalMins;
+  const [finalArrive, arrivePM] = convertFromMilitary(arrivalHour, arrivalMin);
+  arrivalMin %= 60;
 
   return {
     flightId: `${faker.string.alphanumeric({ length: 6, casing: 'lower' })}`,
@@ -119,11 +101,11 @@ const generateFlight = (params: URL, duration: number) => {
     airline: `${airline.name}`,
     origin: `${originCode}`,
     destination: `${destinationCode}`,
-    departureTime: `${departingHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}${departPm ? 'pm' : 'am'}`,
-    duration: `${durationHour}h ${durationMinutes % 60}m`,
-    arrivalTime: `${arrivalHour.toString().padStart(2, '0')}:${arrivalMin.toString().padStart(2, '0')}${pm ? 'pm': 'am'}`,
-    pricePerPassenger: 100.0,
-    layovers
+    departureTime: `${departureHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}${departurePM ? 'pm' : 'am'}`,
+    duration: `${totalHours}h ${totalMins % 60}m`,
+    arrivalTime: `${finalArrive.toString().padStart(2, '0')}:${arrivalMin.toString().padStart(2, '0')}${arrivePM ? 'pm' : 'am'}`,
+    pricePerPassenger: `${price.toFixed(0)}.99`,
+    layovers,
   };
 };
 
