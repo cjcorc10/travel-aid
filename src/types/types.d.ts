@@ -8,20 +8,22 @@ type Inputs = {
   isRoundTrip?: boolean;
 };
 
+type Flight = {
+  flightId: string;
+  flightNumber: string;
+  airline: string;
+  origin: string;
+  destination: string;
+  departureTime: string;
+  duration: string;
+  arrivalTime: string;
+  pricePerPassenger: string;
+  layovers: number;
+};
+
 type Flights = {
   roundTrip: boolean;
-  departingFlights: {
-    flightId: string;
-    flightNumber: string;
-    airline: string;
-    origin: string;
-    destination: string;
-    departureTime: string;
-    duration: string;
-    arrivalTime: string;
-    layovers: number;
-    pricePerPassenger: string;
-  }[];
+  departingFlights: Flight[]
   totalPassengers: number;
 };
 

@@ -43,7 +43,6 @@ const Flights = () => {
       />
       <FilterFlights />
       {isLoading ? (
-        // Insert Shadcn skeleton here
         <div className='flex justify-center p-12'>
         <LoaderCircle size={48} color={'green'} className='animate-spin'/>
         </div>
@@ -59,7 +58,7 @@ const Flights = () => {
               delay: idx < 3 ? (idx % 3) * 0.2 : 0.2,
               duration: 0.5,
             }}
-          >
+            >
             <FlightCard flight={flight} />
           </motion.div>
         ))

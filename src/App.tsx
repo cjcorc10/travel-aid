@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router';
 import Nav from './components/nav';
 import AirportsContext from './contexts/airports';

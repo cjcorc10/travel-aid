@@ -1,17 +1,6 @@
 import { Plane, MoveRight, Clock } from 'lucide-react';
 
-type Flight = {
-  flightId: string;
-  flightNumber: string;
-  airline: string;
-  origin: string;
-  destination: string;
-  departureTime: string;
-  duration: string;
-  arrivalTime: string;
-  pricePerPassenger: number;
-  layovers: number;
-};
+
 
 const FlightCard = ({ flight }: { flight: Flight }) => {
   return (
