@@ -1,18 +1,13 @@
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { MockResponse } from '../../mocks/handlers';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
-import { getFlights } from '../services/flights';
-import clsx from 'clsx';
+import Switch from '../switch';
+import AutoCompleteInput from '../autoCompleteInput';
+import { convertToQueryString } from '../../services/convert';
 
-const FlightForm = ({
-  setData,
-}: {
-  setData: React.Dispatch<React.SetStateAction<MockResponse | null>>;
-}) => {
+const FlightForm = () => {
   const navigate = useNavigate();
-
-  const { register, handleSubmit } = useForm<Inputs>({
+  const { register, handleSubmit, control } = useForm<Inputs>({
     defaultValues: { adults: 1, children: 0 },
   });
 
@@ -20,13 +15,8 @@ const FlightForm = ({
 
   // submits collected formData to API
   const onSubmit: SubmitHandler<Inputs> = async (formData) => {
-    try {
-      const data = await getFlights(formData);
-      setData(data);
-      navigate('/flights', { state: data });
-    } catch (error) {
-      console.error('Error fetching data', error);
-    }
+    const queryString = convertToQueryString(formData);
+    navigate(`/flights?${queryString}`);
   };
 
   return (
@@ -36,47 +26,31 @@ const FlightForm = ({
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col p-8">
-        <div className="flex items-center mb-4">
-          <div
-            onClick={() => setRoundTrip((prev) => !prev)}
-            className={clsx(
-              'relative h-7 w-11 rounded-full inline-flex items-center',
-              roundTrip
-                ? 'bg-green-600 outline-2 outline-green-300'
-                : 'bg-gray-500'
-            )}
-          >
-            <div
-              className={clsx(
-                'h-6 w-6 bg-gray-100 rounded-full transform transition-transform',
-                roundTrip ? 'translate-x-0.5' : 'translate-x-4.5'
-              )}
-            ></div>
-          </div>
-          <p
-            className={clsx(
-              'ml-2 text-gray-600',
-              roundTrip && 'text-green-500'
-            )}
-          >
-            round trip
-          </p>
-        </div>
+        <Switch
+          onClick={() => setRoundTrip((prev) => !prev)}
+          state={roundTrip}
+        />
         <div className="flex flex-col md:flex-row md:gap-6">
           <div className="flex flex-col flex-1">
             <label className="text-gray-600">From</label>
-            <input
-              aria-label="departing"
-              {...register('departing')}
-              className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"
+            <Controller
+              name="departing"
+              control={control}
+              defaultValue=""
+              render={({ field: { onChange, value } }) => (
+                <AutoCompleteInput value={value} onChange={onChange} />
+              )}
             />
           </div>
           <div className="flex flex-col flex-1">
             <label className="text-gray-600">To</label>
-            <input
-              aria-label="destination"
-              {...register('destination')}
-              className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"
+            <Controller
+              name="destination"
+              control={control}
+              defaultValue=""
+              render={({ field: { onChange, value } }) => (
+                <AutoCompleteInput value={value} onChange={onChange} />
+              )}
             />
           </div>
         </div>
@@ -86,6 +60,9 @@ const FlightForm = ({
             <input
               aria-label="adults"
               type="number"
+              min={0}
+              max={99}
+              required
               {...register('adults')}
               className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-2 shadow-md outline-pink-200"
             />
@@ -95,6 +72,9 @@ const FlightForm = ({
             <input
               aria-label="children"
               type="number"
+              min={0}
+              max={99}
+              required
               {...register('children')}
               className="border border-gray-300 p-1 px-2 rounded-lg w-14 mb-2 shadow-md outline-pink-200"
             />
@@ -105,6 +85,7 @@ const FlightForm = ({
             <label className="text-gray-600">Date from</label>
             <input
               aria-label="from"
+              required
               type="date"
               {...register('from')}
               className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"
@@ -115,6 +96,7 @@ const FlightForm = ({
               <label className="text-gray-600">Date to</label>
               <input
                 aria-label="to"
+                required
                 type="date"
                 {...register('to')}
                 className="border border-gray-300 rounded-lg mb-2 p-1 px-2 shadow-md outline-pink-200"

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { render } from '../../../lib/test-utils'
 import Nav from '..'
 import { screen } from '@testing-library/react'
-import { BrowserRouter, MemoryRouter } from 'react-router'
+import { MemoryRouter } from 'react-router'
 
 describe('Nav', () => {
   it('should render', () => {
