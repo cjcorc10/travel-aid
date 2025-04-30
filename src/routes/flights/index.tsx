@@ -36,7 +36,7 @@ const Flights = () => {
   }, [searchParams]);
 
   return (
-    <div className="w-full h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-22 px-2">
+    <div className="w-full min-h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-22 px-2">
       <BookingForm
         params={searchParams}
         setParams={(x) => setSearchParams(x)}

@@ -3,7 +3,7 @@ import Hero from '../../components/hero';
 
 const Home = () => {
   return (
-    <div className="bg-green-50 font-montserrat h-screen md:h-[calc(100vh-4rem)] w-full flex md:flex-row flex-col">
+    <div className="bg-emerald-50 font-montserrat h-screen md:h-[calc(100vh-4rem)] w-full flex md:flex-row flex-col">
       <div className="min-h-100 md:flex-1 md:h-full relative overflow-hidden border-b md:border-r border-green-600 ">
         <Hero />
       </div>
