@@ -10,7 +10,12 @@ const FlightCard = ({flight, handleClick}: componentProps) => {
     <div
       className="bg-white mt-2 border border-gray-100 shadow-md rounded-md py-2 px-4 font-montserrat flex flex-col gap-4"
       id={flight.flightId}
-      onClick={handleClick}
+      onClick={() => {
+        handleClick()
+        console.log('test');
+        // add function for storing flight selected
+        
+      }}
     >
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row items-center">

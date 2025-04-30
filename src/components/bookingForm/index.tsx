@@ -6,9 +6,10 @@ import { SetURLSearchParams } from 'react-router';
 type componentProps = {
   params: URLSearchParams;
   setParams: SetURLSearchParams;
+  isDepart: boolean
 };
 
-const BookingForm = ({ params, setParams }: componentProps) => {
+const BookingForm = ({ params, setParams, isDepart }: componentProps) => {
   const { register, handleSubmit, control } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (formData) => {
@@ -22,19 +23,19 @@ const BookingForm = ({ params, setParams }: componentProps) => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-2 border border-gray-100 shadow-md bg-white p-4 rounded-md font-montserrat "
     >
-      <legend className='pb-2 text-emerald-600'>Edit departing flight</legend>
+      <legend className='pb-2 text-emerald-600'>Edit {isDepart ? 'departing' : 'return'} flight</legend>
       <div className="flex gap-4">
         <div className="flex flex-col">
           <label className="text-sm">From</label>
           <Controller
-            name="departing"
-            control={control}
-            defaultValue={params.get('departing') || undefined}
-            render={({ field: { value, onChange } }) => (
-              <AutoCompleteInput value={value} onChange={onChange} />
-            )}
+          name="departing"
+          control={control}
+          defaultValue={params.get('departing') || undefined}
+          render={({ field: { value, onChange } }) => (
+            <AutoCompleteInput value={value} onChange={onChange} />
+          )}
           />
-        </div>
+          </div>
         <div className="flex flex-col">
           <label className="text-sm">To</label>
           <Controller
@@ -48,7 +49,7 @@ const BookingForm = ({ params, setParams }: componentProps) => {
         </div>
       </div>
       <div className="flex flex-col">
-        <label className="text-sm">Departure date</label>
+        <label className="text-sm">{isDepart ? 'Departure' : 'Return'} date</label>
         <input
           {...register('from')}
           defaultValue={params.get('from') || ''}

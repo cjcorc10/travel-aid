@@ -41,6 +41,7 @@ const Flights = () => {
       <h2 className='text-2xl font-bold text-green-600 pb-2'>{isDepart ? 'Departing' : 'Returning'} flights</h2>
       <BookingForm
         params={searchParams}
+        isDepart={isDepart}
         setParams={(x) => setSearchParams(x)}
       />
       <FilterFlights />
