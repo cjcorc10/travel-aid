@@ -23,7 +23,8 @@ const generateFlight = (params: URL, duration: number) => {
    * adults - 100%
    * kids - 70%
    */
-  const price = duration * 45 + Math.random() * 2 * 100;
+  const price = duration * 45 + Math.random() * 90;
+  
 
   // get airport codes for origin and destination
   const origin = params.searchParams.get('departing') || '';
@@ -35,13 +36,13 @@ const generateFlight = (params: URL, duration: number) => {
   // generate alirline based on code
   const airline = getAirlineByCountry(origin);
 
-  // total travel time
-  const layovers = getLayovers(duration);
-  const [totalHours, totalMins] = getFlightDuration(layovers, duration);
-
   // departure time
   let [hour, minute] = generateRandomTime(6, 23);
   const [departureHour, departurePM] = convertFromMilitary(hour);
+  
+  // total travel time
+  const layovers = (hour > 21) ? 0 : getLayovers(duration);
+  const [totalHours, totalMins] = getFlightDuration(layovers, duration);
 
   // calculate timezone difference
   const originAirport = getAirportByCode(
@@ -71,7 +72,7 @@ const generateFlight = (params: URL, duration: number) => {
     duration: `${totalHours}h ${totalMins % 60}m`,
     arrivalTime: `${finalArrive.toString().padStart(2, '0')}:${arrivalMin.toString().padStart(2, '0')}${arrivePM ? 'pm' : 'am'}`,
     layovers,
-    pricePerPassenger: `${price.toFixed(0)}.00`,
+    pricePerPassenger: price.toFixed(0),
 
   };
 };

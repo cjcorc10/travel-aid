@@ -11,6 +11,7 @@ const Flights = () => {
   const [flights, setFlights] = useState<Flights>();
   const [isLoading, setIsLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isDepart, setIsDepart] = useState(true)
 
   // fetch flight data and set as state for render
   useEffect(() => {
@@ -36,7 +37,8 @@ const Flights = () => {
   }, [searchParams]);
 
   return (
-    <div className="w-full min-h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-22 px-2">
+    <div className="w-full min-h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-20 px-2">
+      <h2 className='text-2xl font-bold text-green-600 pb-2'>{isDepart ? 'Departing' : 'Returning'} flights</h2>
       <BookingForm
         params={searchParams}
         setParams={(x) => setSearchParams(x)}
@@ -59,7 +61,20 @@ const Flights = () => {
               duration: 0.5,
             }}
             >
-            <FlightCard flight={flight} />
+            <FlightCard flight={flight} handleClick={() => {
+                setIsDepart(false)
+                // function to swap origin and destination if roundtrip
+                const params = new URLSearchParams()
+                for(let [key, value] of searchParams) {
+                  if(key === 'destination')
+                    params.set('departing', value)
+                  else if(key === 'departing')
+                    params.set('destination', value)
+                  else
+                    params.set(key,value)
+                }
+                setSearchParams(params);
+              }}/>
           </motion.div>
         ))
       )}

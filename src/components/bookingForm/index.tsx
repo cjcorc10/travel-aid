@@ -22,6 +22,7 @@ const BookingForm = ({ params, setParams }: componentProps) => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-2 border border-gray-100 shadow-md bg-white p-4 rounded-md font-montserrat "
     >
+      <legend className='pb-2 text-emerald-600'>Edit departing flight</legend>
       <div className="flex gap-4">
         <div className="flex flex-col">
           <label className="text-sm">From</label>
