@@ -2,21 +2,33 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import AutoCompleteInput from '../autoCompleteInput';
 import { convertToQueryString } from '../../services/convert';
 import { SetURLSearchParams } from 'react-router';
+import { useEffect } from 'react';
 
 type componentProps = {
   params: URLSearchParams;
-  setParams: SetURLSearchParams;
+  updateParams: (key: any, value: any) => void,
   isDepart: boolean
 };
 
-const BookingForm = ({ params, setParams, isDepart }: componentProps) => {
-  const { register, handleSubmit, control } = useForm<Inputs>();
+const BookingForm = ({ params, updateParams, isDepart }: componentProps) => {
+  const { register, handleSubmit, control, reset } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (formData) => {
-    const newParams = convertToQueryString(formData);
-    // triggers useEffect in callee component <Flights/>
-    setParams(newParams);
+
+    // update parameters
+    for(let [key, value] of Object.entries(formData)) {
+      updateParams(key, value)
+    }
   };
+
+  // update fields of form after first flight is selected to show return flights
+  useEffect(() => {
+    reset({
+      departing: params.get('departing') || undefined,
+      destination: params.get('destination') || undefined,
+      from: params.get(isDepart ? 'from' : 'to') || undefined
+    })
+  }, [params])
 
   return (
     <form
@@ -55,7 +67,7 @@ const BookingForm = ({ params, setParams, isDepart }: componentProps) => {
           defaultValue={params.get('from') || ''}
           className="border rounded-md p-1 w-full shadow-md border-gray-100 text-gray-700 outline-pink-200"
           type="date"
-        />
+          />
       </div>
       <div className="flex justify-center">
         <input

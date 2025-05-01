@@ -1,11 +1,12 @@
 type Inputs = {
   departing: string;
   destination: string;
-  from: Date;
-  to?: Date;
+  from: string;
+  to?: string;
   adults: number;
   children: number;
   isRoundTrip?: boolean;
+  [Symbol.iterator]()
 };
 
 type Flight = {

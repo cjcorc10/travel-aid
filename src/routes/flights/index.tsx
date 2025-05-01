@@ -42,7 +42,12 @@ const Flights = () => {
       <BookingForm
         params={searchParams}
         isDepart={isDepart}
-        setParams={(x) => setSearchParams(x)}
+        updateParams={(key, value) => {
+          setSearchParams(params => {
+            params.set(key, value);
+            return params
+          })
+          }}
       />
       <FilterFlights />
       {isLoading ? (
@@ -63,17 +68,17 @@ const Flights = () => {
             }}
             >
             <FlightCard flight={flight} handleClick={() => {
+              // function to swap origin and destination if roundtrip
+              const params = new URLSearchParams()
+              for(let [key, value] of searchParams) {
+                if(key === 'destination')
+                  params.set('departing', value)
+                else if(key === 'departing')
+                  params.set('destination', value)
+                else
+                params.set(key,value)
+              }
                 setIsDepart(false)
-                // function to swap origin and destination if roundtrip
-                const params = new URLSearchParams()
-                for(let [key, value] of searchParams) {
-                  if(key === 'destination')
-                    params.set('departing', value)
-                  else if(key === 'departing')
-                    params.set('destination', value)
-                  else
-                    params.set(key,value)
-                }
                 setSearchParams(params);
               }}/>
           </motion.div>
