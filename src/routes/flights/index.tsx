@@ -6,22 +6,27 @@ import { useEffect, useState } from 'react';
 import { getFlights } from '@/services/flights';
 import { motion } from 'motion/react';
 import { LoaderCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import FlightPagination from '@/components/flightPagination';
 
 
-const MAX_FLIGHTS_PER_PAGE = 6
+
+const MAX_FLIGHTS_PER_PAGE = 10
 
 const Flights = () => {
   const [flights, setFlights] = useState<Flights>();
   const [isLoading, setIsLoading] = useState(true);
   const [isDepart, setIsDepart] = useState(true)
+  const [isError, setIsError] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchParams, setSearchParams] = useSearchParams();
 
-
+  const handlePageChange = (page: number) => setCurrentPage(prev => prev + page)
+  
 
   // fetch flight data and set as state for render
   useEffect(() => {
     setIsLoading(true);
+    setIsError(false)
 
     // check to see if we already have this flightData
     const prevFlight = localStorage.getItem('previous flights');
@@ -34,10 +39,15 @@ const Flights = () => {
 
     // fetch new flight data
     (async () => {
-      const data = await getFlights(searchParams.toString());
-      setFlights(data.body);
-      localStorage.setItem('previous search', searchParams.toString());
-      localStorage.setItem('previous flights', JSON.stringify(data.body));
+      try {
+        const data = await getFlights(searchParams.toString());
+        setFlights(data.body);
+        localStorage.setItem('previous search', searchParams.toString());
+        localStorage.setItem('previous flights', JSON.stringify(data.body));
+      } catch(e) {
+        setIsError(true)
+        console.log(e)
+      }
       setIsLoading(false);
     })();
   }, [searchParams]);
@@ -62,6 +72,7 @@ const Flights = () => {
         </div>
       
       ) : (
+        isError ? <h3>Unable to find flight data... Please select airport from dropdown</h3> :
         flights?.departingFlights?.map((flight, idx) => (
           <motion.div
             key={flight.flightId}
@@ -91,9 +102,7 @@ const Flights = () => {
         ))
       )}
       <div className='py-8 flex justify-center gap-4 text-pink-400'>
-        <button className='border rounded-md'><ChevronLeft /></button>
-        <button className='text-2xl'>{currentPage}</button>
-        <button className='border rounded-md'><ChevronRight /></button>
+      { !isLoading && !isError && <FlightPagination handlePageChange={handlePageChange} currentPage={currentPage} totalPages={flights?.departingFlights.length}/>}
       </div>
     </div>
   );

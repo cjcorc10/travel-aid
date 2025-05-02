@@ -79,6 +79,7 @@ const generateFlight = (params: URL, duration: number) => {
 
 export const handlers = [
   http.get('https://api.com', async ({ request }) => {
+    await delay(1000);
     const url = new URL(request.url);
 
     // get origin & destination airports
@@ -89,6 +90,12 @@ export const handlers = [
       url.searchParams.get('destination')?.slice(0, 3) || ''
     );
 
+    if(origin === null || destination === null) {
+      const mockResponse: MockResponse = {
+        error: "Flight information not found" 
+      }
+      return HttpResponse.json(mockResponse, {status: 400 })
+    }
     // calculate flight time between locations
     const time = timeToTravel(
       {
@@ -103,7 +110,7 @@ export const handlers = [
 
     const flights: Flights = {
       roundTrip: false,
-      departingFlights: Array.from(new Array(13), () =>
+      departingFlights: Array.from(new Array(8 + Math.floor(Math.random() * 10 * 2)), () =>
         generateFlight(url, time)
       ),
       totalPassengers: 1,
@@ -112,7 +119,7 @@ export const handlers = [
     const mockResponse: MockResponse = {
       body: flights,
     };
-    await delay(1000);
+
     return HttpResponse.json(mockResponse, { status: 200 });
   }),
 ];
