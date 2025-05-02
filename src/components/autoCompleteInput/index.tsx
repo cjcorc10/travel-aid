@@ -55,7 +55,7 @@ console.log(value)
           variant='outline'
           role="combobox"
           aria-expanded={open}
-          className='min-w-[200px] justify-between'
+          className='min-w-[200px] justify-between truncate'
           >
             {value
               ? value.split(',', 2)

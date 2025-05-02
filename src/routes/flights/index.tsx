@@ -10,17 +10,20 @@ import FlightPagination from '@/components/flightPagination';
 
 
 
-const MAX_FLIGHTS_PER_PAGE = 10
 
 const Flights = () => {
   const [flights, setFlights] = useState<Flights>();
   const [isLoading, setIsLoading] = useState(true);
   const [isDepart, setIsDepart] = useState(true)
   const [isError, setIsError] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(0)
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handlePageChange = (page: number) => setCurrentPage(prev => prev + page)
+  const handlePageChange = (page: number) => {
+    setCurrentPage(prev => prev + page)
+    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+  }
+
   
 
   // fetch flight data and set as state for render
@@ -52,6 +55,9 @@ const Flights = () => {
     })();
   }, [searchParams]);
 
+  const MAX_FLIGHTS_PER_PAGE = 6
+
+
   return (
     <div className="w-full min-h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-20 px-2">
       <h2 className='text-2xl font-bold text-green-600 pb-2'>{isDepart ? 'Departing' : 'Returning'} flights</h2>
@@ -73,10 +79,12 @@ const Flights = () => {
       
       ) : (
         isError ? <h3 className='text-center pt-4 text-xl text-red-400'>Unable to find flight data... Please try again</h3> :
-        flights?.departingFlights?.map((flight, idx) => (
+        flights?.departingFlights?.slice(MAX_FLIGHTS_PER_PAGE * currentPage, MAX_FLIGHTS_PER_PAGE * (currentPage + 1))
+        .map((flight, idx) => (
           <motion.div
             key={flight.flightId}
             initial={{ opacity: 0, translateY: '20px' }}
+            animate={idx < 3 && { opacity: 1, translateY: 0}}
             whileInView={{ opacity: 1, translateY: 0 }}
             viewport={{ once: true }}
             transition={{
@@ -102,7 +110,7 @@ const Flights = () => {
         ))
       )}
       <div className='py-8 flex justify-center gap-4 text-pink-400'>
-      { !isLoading && !isError && <FlightPagination handlePageChange={handlePageChange} currentPage={currentPage} totalPages={flights?.departingFlights.length}/>}
+      { !isLoading && !isError && <FlightPagination handlePageChange={handlePageChange} currentPage={currentPage} flightsPerPage={Math.ceil(flights?.departingFlights.length || MAX_FLIGHTS_PER_PAGE) / MAX_FLIGHTS_PER_PAGE}/>}
       </div>
     </div>
   );

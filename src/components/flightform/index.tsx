@@ -32,7 +32,7 @@ const FlightForm = () => {
           state={roundTrip}
         />
         <div className="flex flex-col md:flex-row md:gap-6">
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1 mb-4">
             <label className="text-gray-600">From</label>
             <Controller
               name="departing"
@@ -43,7 +43,7 @@ const FlightForm = () => {
               )}
             />
           </div>
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1 mb-4">
             <label className="text-gray-600">To</label>
             <Controller
               name="destination"

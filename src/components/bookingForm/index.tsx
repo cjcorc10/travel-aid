@@ -31,10 +31,10 @@ const BookingForm = ({ params, updateParams, isDepart }: componentProps) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-2 border border-gray-100 shadow-md bg-white p-4 rounded-md font-montserrat "
+      className="flex flex-col gap-4 border border-gray-100 shadow-md bg-white p-4 rounded-md font-montserrat "
     >
       <legend className='pb-2 text-emerald-600'>Edit {isDepart ? 'departing' : 'return'} flight</legend>
-      <div className="flex gap-4">
+      <div className="flex gap-4 flex-col md:flex-row">
         <div className="flex flex-col">
           <label className="text-sm">From</label>
           <Controller
@@ -70,7 +70,7 @@ const BookingForm = ({ params, updateParams, isDepart }: componentProps) => {
       <div className="flex justify-center">
         <input
           type="submit"
-          className="bg-emerald-600 shadow-md rounded-md text-white mt-2 p-1 px-2 font-bold"
+          className="bg-emerald-600 hover:bg-emerald-800 shadow-md rounded-md text-white mt-2 p-1 px-2 font-bold"
           value="update search"
         />
       </div>
