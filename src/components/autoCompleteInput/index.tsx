@@ -1,6 +1,5 @@
+import airports from '@/data/airports.json'
 import { useEffect, useState } from 'react';
-import { useContext } from 'react';
-import AirportsContext from '@/contexts/airports';
 
 type Props = {
   value: string;
@@ -8,20 +7,19 @@ type Props = {
 };
 
 const AutoCompleteInput = ({ value, onChange }: Props) => {
-  const [results, setResults] = useState<Airport[]>();
+  const [results, setResults] = useState(airports);
 
-  const context = useContext(AirportsContext);
 
   // search for airport each time letter is typed in input
   useEffect(() => {
     if (value.length > 2) {
-      const locations = context?.airports?.filter((airport) =>
+      const locations = airports.filter((airport) =>
         `${airport.airport} ${airport.city} ${airport.code}`
           .toLowerCase()
           .includes(value.toLowerCase())
       );
       // only return 10 entries max
-      locations ? setResults(locations.slice(0, 9)) : setResults([]);
+      setResults(locations.slice(0, 9))
     } else {
       setResults([]);
     }

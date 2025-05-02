@@ -34,8 +34,9 @@ type Airport = {
   city: string;
   country: string;
   code: string;
-  longitude: number;
-  latitude: number;
+  longitude: string;
+  latitude: string;
+  timezone: number;
 };
 
 type Coordinate = {
