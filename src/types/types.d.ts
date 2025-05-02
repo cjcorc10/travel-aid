@@ -20,6 +20,7 @@ type Flight = {
   arrivalTime: string;
   pricePerPassenger: string;
   layovers: number;
+  discountedPrice: number
 };
 
 type Flights = {

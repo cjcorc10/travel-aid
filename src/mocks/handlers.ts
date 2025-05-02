@@ -73,7 +73,7 @@ const generateFlight = (params: URL, duration: number) => {
     arrivalTime: `${finalArrive.toString().padStart(2, '0')}:${arrivalMin.toString().padStart(2, '0')}${arrivePM ? 'pm' : 'am'}`,
     layovers,
     pricePerPassenger: price.toFixed(0),
-
+    discountedPrice: price * .7
   };
 };
 
@@ -103,7 +103,7 @@ export const handlers = [
 
     const flights: Flights = {
       roundTrip: false,
-      departingFlights: Array.from(new Array(6), () =>
+      departingFlights: Array.from(new Array(13), () =>
         generateFlight(url, time)
       ),
       totalPassengers: 1,

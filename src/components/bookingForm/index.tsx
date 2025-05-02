@@ -1,7 +1,5 @@
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import AutoCompleteInput from '../autoCompleteInput';
-import { convertToQueryString } from '../../services/convert';
-import { SetURLSearchParams } from 'react-router';
 import { useEffect } from 'react';
 
 type componentProps = {
@@ -14,8 +12,7 @@ const BookingForm = ({ params, updateParams, isDepart }: componentProps) => {
   const { register, handleSubmit, control, reset } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (formData) => {
-
-    // update parameters
+    // update parameters with new form input
     for(let [key, value] of Object.entries(formData)) {
       updateParams(key, value)
     }

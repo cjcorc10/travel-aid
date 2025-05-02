@@ -12,8 +12,8 @@ const FlightCard = ({flight, handleClick}: componentProps) => {
       id={flight.flightId}
       onClick={() => {
         handleClick()
-        console.log('test');
         // add function for storing flight selected
+        
         
       }}
     >

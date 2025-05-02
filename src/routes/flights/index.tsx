@@ -5,13 +5,19 @@ import { useSearchParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { getFlights } from '@/services/flights';
 import { motion } from 'motion/react';
-import { LoaderCircle } from 'lucide-react';
+import { LoaderCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+
+
+const MAX_FLIGHTS_PER_PAGE = 6
 
 const Flights = () => {
   const [flights, setFlights] = useState<Flights>();
   const [isLoading, setIsLoading] = useState(true);
-  const [searchParams, setSearchParams] = useSearchParams();
   const [isDepart, setIsDepart] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [searchParams, setSearchParams] = useSearchParams();
+
+
 
   // fetch flight data and set as state for render
   useEffect(() => {
@@ -84,6 +90,11 @@ const Flights = () => {
           </motion.div>
         ))
       )}
+      <div className='py-8 flex justify-center gap-4 text-pink-400'>
+        <button className='border rounded-md'><ChevronLeft /></button>
+        <button className='text-2xl'>{currentPage}</button>
+        <button className='border rounded-md'><ChevronRight /></button>
+      </div>
     </div>
   );
 };
