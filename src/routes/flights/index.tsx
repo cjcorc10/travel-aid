@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { getFlights } from '@/services/flights';
 import { motion } from 'motion/react';
-import { LoaderCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import FlightPagination from '@/components/flightPagination';
 
 
@@ -26,7 +26,7 @@ const Flights = () => {
   // fetch flight data and set as state for render
   useEffect(() => {
     setIsLoading(true);
-    setIsError(false)
+    setIsError(false);
 
     // check to see if we already have this flightData
     const prevFlight = localStorage.getItem('previous flights');
@@ -72,7 +72,7 @@ const Flights = () => {
         </div>
       
       ) : (
-        isError ? <h3>Unable to find flight data... Please select airport from dropdown</h3> :
+        isError ? <h3 className='text-center pt-4 text-xl text-red-400'>Unable to find flight data... Please try again</h3> :
         flights?.departingFlights?.map((flight, idx) => (
           <motion.div
             key={flight.flightId}
