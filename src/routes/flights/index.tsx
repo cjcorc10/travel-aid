@@ -29,9 +29,6 @@ const Flights = () => {
     // store prices
     localStorage.setItem(clsx(isDepart ? 'departCost' : 'returnCost'), price)
   
-    const roundTrip = searchParams.get('to')
-    if(roundTrip === '' || !isDepart)
-      navigate('/checkout')
 
     // swap values after selecting first flight
     const params = new URLSearchParams()
@@ -53,7 +50,7 @@ const Flights = () => {
   useEffect(() => {
     // if all flights have been selected, navigate to checkout page
     const roundTrip = searchParams.get('to')
-    if(roundTrip === '' && !isDepart)
+    if(roundTrip === '' && !isDepart || !isDepart && localStorage.getItem('returnCost'))
       navigate('/checkout')    
 
     setIsLoading(true);
