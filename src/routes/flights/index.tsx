@@ -1,15 +1,13 @@
 import FilterFlights from '@/components/filterflights';
 import BookingForm from '@/components/bookingForm';
 import FlightCard from '@/components/flightcard';
-import { useSearchParams } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { getFlights } from '@/services/flights';
 import { motion } from 'motion/react';
 import { LoaderCircle } from 'lucide-react';
 import FlightPagination from '@/components/flightPagination';
 import clsx from 'clsx';
-
-
 
 
 const Flights = () => {
@@ -19,16 +17,45 @@ const Flights = () => {
   const [isError, setIsError] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
   const [searchParams, setSearchParams] = useSearchParams();
-
+  
+  const navigate = useNavigate()
   const handlePageChange = (page: number) => {
     setCurrentPage(prev => prev + page)
     window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
   }
-
   
+  // event handler for when flight is selected
+  const handleFlightSelection = (price: string) => {
+    // store prices
+    localStorage.setItem(clsx(isDepart ? 'departCost' : 'returnCost'), price)
+  
+    const roundTrip = searchParams.get('to')
+    if(roundTrip === '' || !isDepart)
+      navigate('/checkout')
+
+    // swap values after selecting first flight
+    const params = new URLSearchParams()
+    for(let [key, value] of searchParams) {
+      if(key === 'destination')
+        params.set('departing', value)
+      else if(key === 'departing')
+        params.set('destination', value)
+      else
+      params.set(key,value)
+    }
+  
+      setIsDepart(false)
+      setSearchParams(params);
+  }
+
 
   // fetch flight data and set as state for render
   useEffect(() => {
+    // if all flights have been selected, navigate to checkout page
+    const roundTrip = searchParams.get('to')
+    if(roundTrip === '' && !isDepart)
+      navigate('/checkout')    
+
     setIsLoading(true);
     setIsError(false);
     setCurrentPage(0);
@@ -94,22 +121,8 @@ const Flights = () => {
               duration: 0.5,
             }}
             >
-            <FlightCard flight={flight} handleClick={(price: string) => {
-              // function to swap origin and destination if roundtrip
-              const params = new URLSearchParams()
-              for(let [key, value] of searchParams) {
-                if(key === 'destination')
-                  params.set('departing', value)
-                else if(key === 'departing')
-                  params.set('destination', value)
-                else
-                params.set(key,value)
-              }
-                localStorage.setItem(clsx(isDepart ? 'departCost' : 'returnCost'), price)
-                setIsDepart(false)
-                setSearchParams(params);
-              }}/>
-          </motion.div>
+            <FlightCard flight={flight} handleClick={handleFlightSelection} />
+              </motion.div>
         ))
       )}
       <div className='py-8 flex justify-center gap-4 text-pink-400'>

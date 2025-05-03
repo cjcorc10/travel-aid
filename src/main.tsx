@@ -5,6 +5,7 @@ import './index.css'
 import App from './App.tsx'
 import Flights from './routes/flights/index.tsx'
 import Home from './routes/home/index.tsx'
+import Checkout from './routes/checkout/index.tsx'
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
@@ -26,6 +27,7 @@ enableMocking().then(() => {
           <Route path="/" element={<App />}>
             <Route index element={<Home />} />
             <Route path="/flights" element={<Flights />} />
+            <Route path="/checkout" element={<Checkout />}/>
           </Route>
         </Routes>
       </BrowserRouter>

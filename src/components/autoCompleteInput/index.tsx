@@ -27,7 +27,6 @@ const AutoCompleteInput = ({ value, onChange }: Props) => {
   const [open, setOpen] = useState(false)
 
 
-console.log(value)
   // search for airport each time letter is typed in input
   useEffect(() => {
     if (value.length > 0) {
