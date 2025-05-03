@@ -7,6 +7,7 @@ import { getFlights } from '@/services/flights';
 import { motion } from 'motion/react';
 import { LoaderCircle } from 'lucide-react';
 import FlightPagination from '@/components/flightPagination';
+import clsx from 'clsx';
 
 
 
@@ -30,6 +31,7 @@ const Flights = () => {
   useEffect(() => {
     setIsLoading(true);
     setIsError(false);
+    setCurrentPage(0);
 
     // check to see if we already have this flightData
     const prevFlight = localStorage.getItem('previous flights');
@@ -92,7 +94,7 @@ const Flights = () => {
               duration: 0.5,
             }}
             >
-            <FlightCard flight={flight} handleClick={() => {
+            <FlightCard flight={flight} handleClick={(price: string) => {
               // function to swap origin and destination if roundtrip
               const params = new URLSearchParams()
               for(let [key, value] of searchParams) {
@@ -103,6 +105,7 @@ const Flights = () => {
                 else
                 params.set(key,value)
               }
+                localStorage.setItem(clsx(isDepart ? 'departCost' : 'returnCost'), price)
                 setIsDepart(false)
                 setSearchParams(params);
               }}/>

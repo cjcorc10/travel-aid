@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { Check, ChevronsUpDown, ChevronUp } from "lucide-react"
+import { Check, ChevronsUpDown } from "lucide-react"
 
 type Props = {
   value: string;

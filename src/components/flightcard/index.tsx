@@ -2,18 +2,17 @@ import { Plane, MoveRight, Clock } from 'lucide-react';
 
 type componentProps = {
   flight: Flight,
-  handleClick: () => void,
+  handleClick: (price: string) => void,
 }
 
 const FlightCard = ({flight, handleClick}: componentProps) => {
   return (
     <div
-      className="bg-white mt-2 border border-gray-100 shadow-md rounded-md py-2 px-4 font-montserrat flex flex-col gap-4"
+      className="bg-white mt-2 border border-gray-100 shadow-md rounded-md py-2 px-4 font-montserrat flex flex-col gap-4 hover:cursor-pointer"
       id={flight.flightId}
       onClick={() => {
-        handleClick()
+        handleClick(flight.pricePerPassenger)
         // add function for storing flight selected
-        
         
       }}
     >

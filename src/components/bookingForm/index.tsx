@@ -70,7 +70,7 @@ const BookingForm = ({ params, updateParams, isDepart }: componentProps) => {
       <div className="flex justify-center">
         <input
           type="submit"
-          className="bg-emerald-600 hover:bg-emerald-800 shadow-md rounded-md text-white mt-2 p-1 px-2 font-bold"
+          className="bg-emerald-600 hover:bg-emerald-800 shadow-md rounded-md text-white mt-2 p-1 px-2 font-bold hover:cursor-pointer"
           value="update search"
         />
       </div>

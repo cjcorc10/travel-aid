@@ -19,7 +19,7 @@ const FilterFlights = () => {
       <div className="bg-pink-300 rounded-md shadow-md p-2 flex">
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Funnel color="white" />
+            <Funnel color="white" className='hover:cursor-pointer' />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>filter by</DropdownMenuLabel>
