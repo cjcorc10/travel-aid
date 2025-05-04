@@ -4,9 +4,9 @@ export const convertToQueryString = (formData: Inputs) => {
   (Object.keys(formData) as Array<keyof Inputs>).forEach((key) => {
     const value = formData[key];
     if (value !== null && value !== undefined) {
-      params.append(key, value.toString());
+      params.append(key.toString(), value.toString());
     } else {
-      params.append(key, '');
+      params.append(key.toString(), '');
     }
   });
 

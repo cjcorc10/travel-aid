@@ -1,7 +1,7 @@
 
 function Checkout() {
-  const flight1 = localStorage.get('departCost')
-  const flight2 = localStorage.get('returnCost')
+  // const flight1 = localStorage.get('departCost')
+  // const flight2 = localStorage.get('returnCost')
   localStorage.clear()
 
   return (
