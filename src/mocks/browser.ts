@@ -4,4 +4,11 @@ import { handlers } from './handlers'
 
 export const worker = setupWorker(...handlers)
 
-worker.start({ onUnhandledRequest: 'bypass'})
+worker.start({
+    serviceWorker: {
+        url: `${process.env.PUBLIC_URL}/mockServiceWorker.js`,
+        options: {
+            scope: '/'
+        }
+    },
+})

@@ -8,15 +8,14 @@ import Home from './routes/home/index.tsx'
 import Checkout from './routes/checkout/index.tsx'
 
 async function enableMocking() {
-  if (process.env.NODE_ENV !== 'development') {
-    return
-  }
+  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production') {
 
   const { worker } = await import('./mocks/browser')
 
   // `worker.start()` returns a Promise that resolves
   // once the Service Worker is up and ready to intercept requests.
   return worker.start()
+  }
 }
 
 enableMocking().then(() => {
