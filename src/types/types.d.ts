@@ -1,11 +1,12 @@
 type Inputs = {
   departing: string;
   destination: string;
-  from: Date;
-  to?: Date;
+  from: string;
+  to?: string;
   adults: number;
   children: number;
   isRoundTrip?: boolean;
+  [Symbol.iterator]()
 };
 
 type Flight = {
@@ -19,6 +20,7 @@ type Flight = {
   arrivalTime: string;
   pricePerPassenger: string;
   layovers: number;
+  discountedPrice: number
 };
 
 type Flights = {
@@ -32,8 +34,9 @@ type Airport = {
   city: string;
   country: string;
   code: string;
-  longitude: number;
-  latitude: number;
+  longitude: string;
+  latitude: string;
+  timezone: number;
 };
 
 type Coordinate = {
