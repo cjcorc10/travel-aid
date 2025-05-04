@@ -2,7 +2,7 @@ import { Plane, MoveRight, Clock } from 'lucide-react';
 
 type componentProps = {
   flight: Flight,
-  handleClick: (price: string) => void,
+  handleClick: (flight: Flight) => void,
 }
 
 const FlightCard = ({flight, handleClick}: componentProps) => {
@@ -10,7 +10,7 @@ const FlightCard = ({flight, handleClick}: componentProps) => {
     <div
       className="bg-white mt-2 border border-gray-100 shadow-md rounded-md py-2 px-4 font-montserrat flex flex-col gap-4 hover:cursor-pointer"
       id={flight.flightId}
-      onClick={() => handleClick(flight.pricePerPassenger)}
+      onClick={() => handleClick(flight)}
     >
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row items-center">

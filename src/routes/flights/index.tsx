@@ -7,7 +7,6 @@ import { getFlights } from '@/services/flights';
 import { motion } from 'motion/react';
 import { LoaderCircle } from 'lucide-react';
 import FlightPagination from '@/components/flightPagination';
-import clsx from 'clsx';
 
 
 const Flights = () => {
@@ -16,6 +15,7 @@ const Flights = () => {
   const [isDepart, setIsDepart] = useState(true)
   const [isError, setIsError] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
+  const [selectedFlights, setSelectedFlights] = useState<Flight[]>([])
   const [searchParams, setSearchParams] = useSearchParams();
   
   const navigate = useNavigate()
@@ -23,12 +23,13 @@ const Flights = () => {
     setCurrentPage(prev => prev + page)
     window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
   }
+
   
   // event handler for when flight is selected
-  const handleFlightSelection = (price: string) => {
-    // store prices
-    localStorage.setItem(clsx(isDepart ? 'departCost' : 'returnCost'), price)
-  
+  const handleFlightSelection = (flight: Flight) => {
+    // store selectedFlights
+    setSelectedFlights(prev => Array(...prev, flight))
+
 
     // swap values after selecting first flight
     const params = new URLSearchParams()
@@ -50,8 +51,8 @@ const Flights = () => {
   useEffect(() => {
     // if all flights have been selected, navigate to checkout page
     const roundTrip = searchParams.get('to')
-    if(roundTrip === '' && !isDepart || !isDepart && localStorage.getItem('returnCost'))
-      navigate('/checkout')    
+    if(roundTrip === '' && !isDepart || selectedFlights.length == 2)
+      navigate('/checkout', {state: selectedFlights})    
 
     setIsLoading(true);
     setIsError(false);
