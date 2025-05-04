@@ -78,7 +78,7 @@ const generateFlight = (params: URL, duration: number) => {
 };
 
 export const handlers = [
-  http.get('https://api.com', async ({ request }) => {
+  http.get('/flights', async ({ request }) => {
     await delay(1000);
     const url = new URL(request.url);
 
