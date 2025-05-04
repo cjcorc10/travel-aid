@@ -1,19 +1,17 @@
 {
   "headers": [
     {
-        "source": "/mockServiceWorker.js",
-        "headers": [
-            {
-                "key": "Service-Worker-Allowed",
-                "value": "/"
-            }
-        ]
+      "source": "/mockServiceWorker.js",
+      "headers": [
+        {
+          "key": "Service-Worker-Allowed", 
+          "value": "/"
+        }
+      ]
     }
   ],
-  "routes": [
-    {
-        "src": "/flights",
-        "dest": "/index.html"
-    }
+  "rewrites": [
+    { "source": "/flights", "destination": "/index.html" },
+    { "source": "/:path*", "destination": "/index.html" }
   ]
-  }
+}
