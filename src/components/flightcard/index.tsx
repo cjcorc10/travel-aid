@@ -44,14 +44,14 @@ const FlightCard = ({flight, handleClick = () => null}: componentProps) => {
       </div>
       <div className="flex  items-center gap-4 justify-center bg-gray-50 rounded-md p-2">
         <div>
-          <h3 className="text-3xl font-bold font-vice">
+          <h3 className="text-2xl font-bold ">
             {flight.departureTime}
           </h3>
           <p className="text-sm text-gray-500 text-center">{flight.origin}</p>
         </div>
         <MoveRight size={32} color="pink" />
         <div>
-          <h3 className="text-3xl font-bold font-vice">{flight.arrivalTime}</h3>
+          <h3 className="text-2xl font-bold ">{flight.arrivalTime}</h3>
           <p className="text-sm text-gray-500 text-center">
             {flight.destination}
           </p>
