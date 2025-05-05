@@ -1,6 +1,8 @@
 import { ArrowRight, ArrowLeftRight } from "lucide-react"
 import { useLocation } from "react-router"
 import clsx from "clsx"
+import DetailedFlightCard from "@/components/detailedFlightCard"
+import FlightCard from "@/components/flightcard"
 
 const Checkout = () => {
   const location = useLocation()
@@ -13,15 +15,20 @@ const Checkout = () => {
 
   // get flight info time, cost, airline
   // first flight
-  const departFlight = location.state[0]
-
-  // second flight
-  const returnFlight = location.state[1]
+  const flights = location.state
   
 
   return (
-    <div>
-      <h2 className="flex text-2xl gap-3 items-center justify-center my-4">{origin}{roundTrip ? <ArrowLeftRight /> : <ArrowRight />}{destination}</h2>
+    <div className="px-2 font-montserrat">
+      <h2 className="flex text-xl gap-3 font-bold text-gray-700 items-center my-4 ">{origin}{roundTrip ? <ArrowLeftRight size={16} color="pink"/> : <ArrowRight size={16} color="pink"/>}{destination}</h2>
+      
+      <h3 className="font-bold text-emerald-700">Selected flights</h3>
+      <div>
+        {flights.map((flight: Flight) => (
+          <FlightCard flight={flight} />
+          // <DetailedFlightCard flight={flight}/>
+        ))}
+      </div>
     </div>
   )
 }
