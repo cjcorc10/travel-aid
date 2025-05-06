@@ -66,8 +66,7 @@ const Flights = () => {
   // event handler for when flight is selected
   const handleFlightSelection = (flight: Flight) => {
     // store selectedFlights
-    setSelectedFlights(prev => Array(...prev, flight))
-
+    setSelectedFlights(prev => [...prev, flight])
 
     // swap values after selecting first flight
     const params = new URLSearchParams()
@@ -87,9 +86,6 @@ const Flights = () => {
 
   // fetch flight data and set as state for render
   useEffect(() => {
-    // if(filter.length > 0)
-    //   switchFilter(filter)
-    console.log(flights)
     // if all flights have been selected, navigate to checkout page
     const roundTrip = searchParams.get('to')
     if(roundTrip === '' && !isDepart || selectedFlights.length == 2)
