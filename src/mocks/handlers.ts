@@ -37,7 +37,7 @@ const generateFlight = (params: URL, duration: number): Flight => {
   const airline = getAirlineByCountry(origin);
 
   // departure time
-  let [hour, minute] = generateRandomTime(6, 23);
+  const [hour, minute] = generateRandomTime(6, 23);
   const [departureHour, departurePM] = convertFromMilitary(hour);
   
   // total travel time
@@ -68,7 +68,8 @@ const generateFlight = (params: URL, duration: number): Flight => {
     airline: airline.name,
     origin: originCode,
     destination: destinationCode,
-    departureTime: `${departureHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}${departurePM ? 'pm' : 'am'}`,
+    // departureTime: `${departureHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}${departurePM ? 'pm' : 'am'}`,
+    departureTime: `${hour}.${minute}`,
     duration: `${totalHours}h ${totalMins % 60}m`,
     arrivalTime: `${finalArrive.toString().padStart(2, '0')}:${arrivalMin.toString().padStart(2, '0')}${arrivePM ? 'pm' : 'am'}`,
     layovers,

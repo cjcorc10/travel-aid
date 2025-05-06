@@ -1,11 +1,15 @@
 import { Plane, MoveRight, Clock } from 'lucide-react';
+import { convertFromMilitary } from '@/mocks/handlerFunctions/time';
 
 type componentProps = {
   flight: Flight,
   handleClick?: (flight: Flight) => void,
 }
 
+
 const FlightCard = ({flight, handleClick = () => null}: componentProps) => {
+
+  const [departureHour, isPm] =  convertFromMilitary(Number(flight.departureTime.split('.')[0]))
   return (
     <div
       className="bg-white mt-2 border border-gray-100 shadow-md rounded-md py-2 px-4 font-montserrat flex flex-col gap-4 hover:cursor-pointer"
@@ -45,7 +49,7 @@ const FlightCard = ({flight, handleClick = () => null}: componentProps) => {
       <div className="flex  items-center gap-4 justify-center bg-gray-50 rounded-md p-2">
         <div>
           <h3 className="text-2xl font-bold ">
-            {flight.departureTime}
+            {`${departureHour.toString().padStart(2, '0')}:${flight.departureTime.split('.')[1].padStart(2, '0')}${isPm ? 'pm' : 'am'}`}
           </h3>
           <p className="text-sm text-gray-500 text-center">{flight.origin}</p>
         </div>
