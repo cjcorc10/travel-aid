@@ -5,7 +5,6 @@ type Inputs = {
   to?: string;
   adults: number;
   children: number;
-  isRoundTrip?: boolean;
   [Symbol.iterator]()
 };
 
@@ -24,7 +23,6 @@ type Flight = {
 };
 
 type Flights = {
-  roundTrip: boolean;
   departingFlights: Flight[]
   totalPassengers: number;
 };

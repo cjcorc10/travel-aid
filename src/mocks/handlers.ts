@@ -17,7 +17,7 @@ export interface MockResponse {
 
 
 
-const generateFlight = (params: URL, duration: number) => {
+const generateFlight = (params: URL, duration: number): Flight => {
   /**
    * Calculate price
    * adults - 100%
@@ -57,7 +57,7 @@ const generateFlight = (params: URL, duration: number) => {
       : 0;
 
   // arrival time
-  let arrivalHour = hour + totalHours - timeZoneDiff;
+  let arrivalHour = Math.floor(hour + totalHours - timeZoneDiff)
   let arrivalMin = minute + totalMins;
   const [finalArrive, arrivePM] = convertFromMilitary(arrivalHour, arrivalMin);
   arrivalMin %= 60;
@@ -73,7 +73,7 @@ const generateFlight = (params: URL, duration: number) => {
     arrivalTime: `${finalArrive.toString().padStart(2, '0')}:${arrivalMin.toString().padStart(2, '0')}${arrivePM ? 'pm' : 'am'}`,
     layovers,
     pricePerPassenger: price.toFixed(0),
-    discountedPrice: (price * .7).toFixed(0)
+    discountedPrice: Number((price * .7).toFixed(0))
   };
 };
 
@@ -109,7 +109,6 @@ export const handlers = [
     );
 
     const flights: Flights = {
-      roundTrip: false,
       departingFlights: Array.from(new Array(8 + Math.floor(Math.random() * 10 * 2)), () =>
         generateFlight(url, time)
       ),
