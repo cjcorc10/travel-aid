@@ -12,7 +12,13 @@ type Filterprops = {
   changeFilter: (filterName: string) => void
 }
 
-const filters = ['departureTime', 'pricePerPassenger', 'duration']
+type Dictionary = { [index: string]: string}
+
+const filters: Dictionary = {
+  'departureTime': 'departure time', 
+  'pricePerPassenger': 'ticket price', 
+  'duration': 'duration'
+}
 
 const FilterFlights = ({changeFilter}: Filterprops) => {
   return (
@@ -30,14 +36,11 @@ const FilterFlights = ({changeFilter}: Filterprops) => {
           <DropdownMenuContent>
             <DropdownMenuLabel>filter by</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {filters.map(filterName => (
+            {Object.keys(filters).map(filterName => (
               <DropdownMenuItem
-                onClick={() => {
-                  // setParams(filterName)
-                  // setFilter(filterName)
-                  changeFilter(filterName)
-                }}
-                  >{filterName}</DropdownMenuItem>
+                key={filterName}
+                onClick={() => changeFilter(filterName)}>
+                  {filters[filterName]}</DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
