@@ -9,13 +9,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 type Filterprops = {
-  setParams: (filter: string) => void
-  setFilter: (filter: string) => void
+  changeFilter: (filterName: string) => void
 }
 
 const filters = ['departureTime', 'pricePerPassenger', 'duration']
 
-const FilterFlights = ({setParams, setFilter}: Filterprops) => {
+const FilterFlights = ({changeFilter}: Filterprops) => {
   return (
     <div className="mt-12 flex gap-2">
       <input
@@ -34,8 +33,11 @@ const FilterFlights = ({setParams, setFilter}: Filterprops) => {
             {filters.map(filterName => (
               <DropdownMenuItem
                 onClick={() => {
-                  setParams(filterName)
-                  setFilter(filterName)}}>{filterName}</DropdownMenuItem>
+                  // setParams(filterName)
+                  // setFilter(filterName)
+                  changeFilter(filterName)
+                }}
+                  >{filterName}</DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>

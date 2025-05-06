@@ -17,7 +17,6 @@ const Flights = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const [selectedFlights, setSelectedFlights] = useState<Flight[]>([])
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filter, setFilter] = useState("");
   const navigate = useNavigate()
 
 
@@ -26,27 +25,34 @@ const Flights = () => {
     window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
   }
 
+  // called by switch function to re-order the flights based on a property
+  const sortFlightsBy = (property: string) => {
+    setFlights(prev => {
+      if(!prev) return prev
+
+      return {
+        ...prev,
+        departingFlights: prev?.departingFlights.sort(compareByX(property))
+      }
+    })
+  } 
+
+  // depending on filter chosen, sort the flights returned
   const switchFilter = (filter: string) => {
     switch(filter) {
       case 'pricePerPassenger':
-        setFlights(prev => {
-          if(!prev) return prev
-
-          return {
-            ...prev,
-            departingFlights: prev?.departingFlights.sort(compareByX('pricePerPassenger')),
-          }
-        })
+        sortFlightsBy('pricePerPassenger')
         break;
       case 'departureTime':
-        flights?.departingFlights.sort(compareByX('departureTime'))
+        sortFlightsBy('departureTime')
         break;
       case 'duration':
-        flights?.departingFlights.sort(compareByX('duration'))
+        sortFlightsBy('duration')
         break;
     }
   } 
 
+  // comparison function used with array.sort to compare properties in flights
   const compareByX = (property: string) => {
     return (a: Flight, b: Flight, ) => {
       if(Number(a[property]) < Number(b[property]))
@@ -81,8 +87,8 @@ const Flights = () => {
 
   // fetch flight data and set as state for render
   useEffect(() => {
-    if(filter.length > 0)
-      switchFilter(filter)
+    // if(filter.length > 0)
+    //   switchFilter(filter)
     console.log(flights)
     // if all flights have been selected, navigate to checkout page
     const roundTrip = searchParams.get('to')
@@ -134,12 +140,8 @@ const Flights = () => {
           })
           }}
       />
-      <FilterFlights setParams={(filter: string) => {
-        setSearchParams(prev => {
-          prev.set('filter', filter)
-          return prev
-        })
-      }} setFilter={(x: string) => setFilter(x)}/>
+      <FilterFlights changeFilter={(filterName: string) => switchFilter(filterName)}
+     />
       {isLoading ? (
         <div className='flex justify-center p-12'>
         <LoaderCircle size={48} color={'green'} className='animate-spin'/>

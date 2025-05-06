@@ -10,6 +10,7 @@ type componentProps = {
 const FlightCard = ({flight, handleClick = () => null}: componentProps) => {
 
   const [departureHour, isPm] =  convertFromMilitary(Number(flight.departureTime.split('.')[0]))
+  const durationTimes = flight.duration.split('.')
   return (
     <div
       className="bg-white mt-2 border border-gray-100 shadow-md rounded-md py-2 px-4 font-montserrat flex flex-col gap-4 hover:cursor-pointer"
@@ -43,7 +44,7 @@ const FlightCard = ({flight, handleClick = () => null}: componentProps) => {
         </p>
         <div className="flex items-center">
           <Clock size={16} className="mr-1" />
-          <p className="text-gray-500">{flight.duration}</p>
+          <p className="text-gray-500">{`${durationTimes[0]}h ${Number(durationTimes[1]) % 60}m`}</p>
         </div>
       </div>
       <div className="flex  items-center gap-4 justify-center bg-gray-50 rounded-md p-2">
