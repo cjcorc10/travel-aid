@@ -8,7 +8,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-const FilterFlights = () => {
+type Filterprops = {
+  setParams: (filter: string) => void
+  setFilter: (filter: string) => void
+}
+
+const filters = ['departureTime', 'pricePerPassenger', 'duration']
+
+const FilterFlights = ({setParams, setFilter}: Filterprops) => {
   return (
     <div className="mt-12 flex gap-2">
       <input
@@ -24,8 +31,12 @@ const FilterFlights = () => {
           <DropdownMenuContent>
             <DropdownMenuLabel>filter by</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>time</DropdownMenuItem>
-            <DropdownMenuItem>price</DropdownMenuItem>
+            {filters.map(filterName => (
+              <DropdownMenuItem
+                onClick={() => {
+                  setParams(filterName)
+                  setFilter(filterName)}}>{filterName}</DropdownMenuItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

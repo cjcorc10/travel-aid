@@ -37,7 +37,7 @@ const FlightCard = ({flight, handleClick = () => null}: componentProps) => {
       </div>
       <div className="text-sm flex gap-6">
         <p className="border rounded-full px-2 bg-black text-white font-bold">
-          {flight.layovers > 0
+          {Number(flight.layovers) > 0
             ? `${flight.layovers} layover(s)`
             : `direct flight`}
         </p>

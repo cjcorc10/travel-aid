@@ -38,7 +38,6 @@ const generateFlight = (params: URL, duration: number): Flight => {
 
   // departure time
   const [hour, minute] = generateRandomTime(6, 23);
-  const [departureHour, departurePM] = convertFromMilitary(hour);
   
   // total travel time
   const layovers = (hour > 21) ? 0 : getLayovers(duration);
@@ -68,13 +67,11 @@ const generateFlight = (params: URL, duration: number): Flight => {
     airline: airline.name,
     origin: originCode,
     destination: destinationCode,
-    // departureTime: `${departureHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}${departurePM ? 'pm' : 'am'}`,
     departureTime: `${hour}.${minute}`,
     duration: `${totalHours}h ${totalMins % 60}m`,
     arrivalTime: `${finalArrive.toString().padStart(2, '0')}:${arrivalMin.toString().padStart(2, '0')}${arrivePM ? 'pm' : 'am'}`,
-    layovers,
+    layovers: layovers.toString(),
     pricePerPassenger: price.toFixed(0),
-    discountedPrice: Number((price * .7).toFixed(0))
   };
 };
 

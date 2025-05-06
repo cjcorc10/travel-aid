@@ -23,7 +23,7 @@ export const getAirportByCode = (iata: string) => {
 };
 
 export const getLayovers = (duration: number) => {
-  let layovers: number = Math.floor(Math.random() * 3);
+  let layovers = Math.floor(Math.random() * 3);
   duration > 8 && layovers++;
   return layovers;
 };

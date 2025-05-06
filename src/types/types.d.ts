@@ -14,12 +14,11 @@ type Flight = {
   airline: string;
   origin: string;
   destination: string;
-  departureTime: string;
-  duration: string;
+  [departureTime: string]: string;
+  [duration: string]: string;
   arrivalTime: string;
-  pricePerPassenger: string;
-  layovers: number;
-  discountedPrice: number
+  [pricePerPassenger: string]: string;
+  layovers: string;
 };
 
 type Flights = {

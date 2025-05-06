@@ -17,13 +17,45 @@ const Flights = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const [selectedFlights, setSelectedFlights] = useState<Flight[]>([])
   const [searchParams, setSearchParams] = useSearchParams();
-  
+  const [filter, setFilter] = useState("");
   const navigate = useNavigate()
+
+
   const handlePageChange = (page: number) => {
     setCurrentPage(prev => prev + page)
     window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
   }
 
+  const switchFilter = (filter: string) => {
+    switch(filter) {
+      case 'pricePerPassenger':
+        setFlights(prev => {
+          if(!prev) return prev
+
+          return {
+            ...prev,
+            departingFlights: prev?.departingFlights.sort(compareByX('pricePerPassenger')),
+          }
+        })
+        break;
+      case 'departureTime':
+        flights?.departingFlights.sort(compareByX('departureTime'))
+        break;
+      case 'duration':
+        flights?.departingFlights.sort(compareByX('duration'))
+        break;
+    }
+  } 
+
+  const compareByX = (property: string) => {
+    return (a: Flight, b: Flight, ) => {
+      if(Number(a[property]) < Number(b[property]))
+        return -1
+      else if (Number(a[property]) > Number(b[property]))
+        return 1
+      return 0
+    }
+  }
   
   // event handler for when flight is selected
   const handleFlightSelection = (flight: Flight) => {
@@ -49,6 +81,9 @@ const Flights = () => {
 
   // fetch flight data and set as state for render
   useEffect(() => {
+    if(filter.length > 0)
+      switchFilter(filter)
+    console.log(flights)
     // if all flights have been selected, navigate to checkout page
     const roundTrip = searchParams.get('to')
     if(roundTrip === '' && !isDepart || selectedFlights.length == 2)
@@ -84,6 +119,7 @@ const Flights = () => {
 
   const MAX_FLIGHTS_PER_PAGE = 6
 
+  
 
   return (
     <div className="w-full min-h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-20 px-2">
@@ -98,7 +134,12 @@ const Flights = () => {
           })
           }}
       />
-      <FilterFlights />
+      <FilterFlights setParams={(filter: string) => {
+        setSearchParams(prev => {
+          prev.set('filter', filter)
+          return prev
+        })
+      }} setFilter={(x: string) => setFilter(x)}/>
       {isLoading ? (
         <div className='flex justify-center p-12'>
         <LoaderCircle size={48} color={'green'} className='animate-spin'/>
