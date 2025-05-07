@@ -116,8 +116,8 @@ const Flights = () => {
   return (
     <div className="w-full min-h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-20 px-2">
       <div className='flex'>
-        <div className='flex-1 min-w-60 hidden md:block'>
-          hi
+        <div className='flex-1 min-w-60 hidden md:block border-r-2 border-gray-400 mr-2 text-green-600 text-2xl font-bold'>
+          Filters
 
         </div>
         <div className='flex-3 min-w-xl'>
