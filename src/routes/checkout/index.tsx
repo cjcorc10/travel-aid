@@ -15,6 +15,7 @@ const Checkout = () => {
   const adults = url.get('adults')
   const children = url.get('children')
 
+  console.log(children)
 
   // get flights and adult/child prices
   const flights = location.state
@@ -34,7 +35,7 @@ const Checkout = () => {
           <p>{roundTrip ? 'roundtrip' : 'one-way'}</p>
         </div>
         <div className="flex flex-col items-end pt-6">
-          <h2 className="text-3xl text-green-600 font-bold">${Number(children) > 0 ? totalAdult + totalKids : totalAdult}</h2>
+          <h2 className="text-3xl text-green-600 font-bold">${Number(children) > 0 ? totalAdult * (Number(adults) + Number(children)) : totalAdult * Number(adults)}</h2>
           <p className="text-sm relative bottom-2">lowest total price</p>
         </div>
       </div>
@@ -55,8 +56,7 @@ const Checkout = () => {
             </motion.div>
           ))}
         </div>
-          <button className=" px-2 py-1 mt-2 text-2xl bg-green-600 text-green-50 rounded-md shadow-md onclick:bg-green-800">Place order</button>
-
+          <button className=" px-2 py-1 mt-2 text-2xl bg-emerald-600 text-green-50 rounded-md shadow-md hover:bg-green-800">Place order</button>
         </div>
     </div>
   )

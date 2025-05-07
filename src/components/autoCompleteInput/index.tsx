@@ -54,7 +54,7 @@ const AutoCompleteInput = ({ value, onChange }: Props) => {
           variant='outline'
           role="combobox"
           aria-expanded={open}
-          className='min-w-[200px] justify-between truncate'
+          className='min-w-[200px] md:w-full justify-between truncate  '
           >
             {value
               ? value.split(',', 2)
