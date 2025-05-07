@@ -7,7 +7,7 @@ const Home = () => {
       <div className="h-100 md:flex-1 md:h-full relative overflow-hidden border-b md:border-r border-green-600 ">
         <Hero />
       </div>
-      <div className="flex md:flex-2 flex-col items-center justify-center my-12">
+      <div className="flex md:flex-2 flex-col items-center justify-center my-12 md:px-2">
         <FlightForm />
       </div>
     </div>

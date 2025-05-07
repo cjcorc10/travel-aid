@@ -31,11 +31,11 @@ const BookingForm = ({ params, updateParams, isDepart }: componentProps) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col flex-1 gap-4 border border-gray-100 shadow-md bg-white px-10 py-6 rounded-md font-montserrat min-w-2xl"
+      className="flex flex-col flex-1 gap-4 border border-gray-100 shadow-md bg-white px-10 py-6 rounded-md font-montserrat "
     >
       <legend className='pb-2 text-emerald-600'>Edit {isDepart ? 'departing' : 'return'} flight</legend>
-      <div className="flex gap-4 flex-col lg:flex-row md:items-end lg:pb-4">
-        <div className="flex flex-col flex-1 md:w-full xl:max-w-sm ">
+      <div className="flex gap-4 flex-col xl:flex-row lg:pb-4 xl:items-end">
+        <div className="flex flex-col flex-1 xl:w-64">
           <label className="text-sm">From</label>
           <Controller
           name="departing"
@@ -46,7 +46,7 @@ const BookingForm = ({ params, updateParams, isDepart }: componentProps) => {
           )}
           />
           </div>
-        <div className="flex flex-col flex-1 md:w-full xl:max-w-sm">
+        <div className="flex flex-col flex-1 xl:w-64">
           <label className="text-sm">To</label>
           <Controller
             name="destination"
@@ -57,7 +57,7 @@ const BookingForm = ({ params, updateParams, isDepart }: componentProps) => {
             )}
           />
         </div>
-      <div className="flex flex-col md:w-full lg:w-32 flex-1">
+      <div className="flex flex-col flex-1 ">
         <label className="text-sm">{isDepart ? 'Departure' : 'Return'} date</label>
         <input
           {...register('from')}
@@ -69,7 +69,7 @@ const BookingForm = ({ params, updateParams, isDepart }: componentProps) => {
       <div className="flex justify-center md:items-center flex-1">
         <input
           type="submit"
-          className=" bg-emerald-600 hover:bg-emerald-800 shadow-md rounded-md text-white mt-2 p-1 px-2 font-bold hover:cursor-pointer "
+          className="bg-emerald-600 hover:bg-emerald-800 shadow-md rounded-md text-white mt-2 p-1 px-2 font-bold hover:cursor-pointer xl:flex-1"
           value="update search"
           ></input>
           </div>
