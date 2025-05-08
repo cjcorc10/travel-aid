@@ -7,6 +7,7 @@ import { getFlights } from '@/services/flights';
 import { motion } from 'motion/react';
 import { LoaderCircle } from 'lucide-react';
 import FlightPagination from '@/components/flightPagination';
+import FilterMenu from '@/components/filterMenu';
 
 const Flights = () => {
   const [flights, setFlights] = useState<Flights>();
@@ -115,17 +116,13 @@ const Flights = () => {
 
   return (
     <div className="w-full min-h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-20 px-2">
-      <div className='flex'>
-        <div className='flex-1 min-w-60 hidden md:block border-r-2 border-gray-400 mr-2 text-green-600 text-2xl font-bold'>
-          Filters
-
-        </div>
-        <div className='flex-3 min-w-xl'>
           <h2 className="text-2xl font-bold text-green-600 pb-2">
             {isDepart ? 'Departing' : 'Returning'} flights
           </h2>
+      <div className='flex'>
+        <FilterMenu />
+        <div className='flex-3 min-w-xl'>
           <div className='flex '>
-
           <BookingForm
             params={searchParams}
             isDepart={isDepart}
