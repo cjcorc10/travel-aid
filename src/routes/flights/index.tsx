@@ -13,6 +13,7 @@ const Flights = () => {
 
   // state variable that holds flight data
   const [flights, setFlights] = useState<Flights>();
+  const [filteredFlights, setFilteredFlights] = useState<Flights>();
   // is the data still being fetched
   const [isLoading, setIsLoading] = useState(true);
   // are we picking departure or return flight
@@ -35,22 +36,43 @@ const Flights = () => {
   // filtering functions 
   // price
   const checkPrice = (flight: Flight) => {
-    console.log(flight['pricePerPassenger'])
-    if(filterValues?.price)
-      return Number(flight['pricePerPassenger']) < filterValues.price
-    else 
-      return true
+    return filterValues?.price 
+      ? Number(flight['pricePerPassenger']) < filterValues.price
+      : true
   }
   // stops
-  // departure time 
-  const filterFlights = () => {
-    setFlights((prev) => {
-      if (!prev) return prev
+  const checkStops = (flight: Flight) => {
+    // edge case for if stops is equal to 0
+    if(filterValues?.stops === 0)
+      return Number(flight.layovers) === 0
 
-      const filteredFlights = prev.departingFlights.filter(checkPrice)      
+    return filterValues?.stops
+      ? Number(flight.layovers) < filterValues.stops
+      : true
+  }
+  // departure time 
+
+  // apply filters
+  const filterFlights = () => {
+    if (!flights) {
+      setFilteredFlights(flights)
+      return
+    }
+    const activeFilters: FilterFunctions[] = [];
+
+    if(filterValues?.price)
+      activeFilters.push(checkPrice)
+
+    if(filterValues?.stops !== undefined)
+      activeFilters.push(checkStops)
+
+    const filtered = flights.departingFlights.filter(flight => 
+      activeFilters.every(filter => filter(flight)))
+
+    setFilteredFlights(() => {
       return {
-        ...prev,
-        departingFlights: filteredFlights
+        ...flights,
+        departingFlights: filtered
       }
     })
   }
@@ -60,15 +82,17 @@ const Flights = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   };
 
+
   // called by switch function to re-order the flights based on a property
   const sortFlightsBy = (property: string) => {
-    setFlights((prev) => {
+
+    setFilteredFlights((prev) => {
       if (!prev) return prev;
 
-      return {
-        ...prev,
-        departingFlights: prev?.departingFlights.sort(compareByX(property)),
-      };
+        return {
+          ...prev,
+          departingFlights: prev?.departingFlights.sort(compareByX(property)),
+        };
     });
   };
 
@@ -138,6 +162,7 @@ const Flights = () => {
       try {
         const data = await getFlights(searchParams.toString());
         setFlights(data.body);
+        setFilteredFlights(data.body);
         localStorage.setItem('previous search', searchParams.toString());
         localStorage.setItem('previous flights', JSON.stringify(data.body));
       } catch (e) {
@@ -190,7 +215,7 @@ const Flights = () => {
               Unable to find flight data... Please try again
             </h3>
           ) : (
-            flights?.departingFlights
+            filteredFlights?.departingFlights
               ?.slice(
                 MAX_FLIGHTS_PER_PAGE * currentPage,
                 MAX_FLIGHTS_PER_PAGE * (currentPage + 1)

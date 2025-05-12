@@ -1,9 +1,9 @@
 import { Slider } from '@/components/ui/slider'
 import { Button } from "@/components/ui/button"
 import TimeSlider from './timeSlider'
+import clsx from 'clsx';
 
 const layovers = [0, 1, 2, 3]
-const prices = [100, 250, 400, 550, 700, 850, 1000]
 
 type PropTypes = {
   filters: Filters | undefined,
@@ -12,11 +12,6 @@ type PropTypes = {
 }
 
 const FilterMenu = ({setFilters, handleClick, filters}: PropTypes) => {
-  // const [filters, setFilters] = useState({
-  //   stops: 0,
-  //   price: 100,
-  //   departureTime: [600, 800]
-  // })
 
 
   return (
@@ -41,15 +36,13 @@ const FilterMenu = ({setFilters, handleClick, filters}: PropTypes) => {
             <p className='font-bold text-gray-400'>$0 - $1000+</p>
           </div>
             <Slider 
-              value={[filters?.price || 100]} 
+              value={[filters?.price || 1000]} 
               onValueChange={(i) => setFilters(prev => ({...prev, price: i[0]}))}
               min={100}
               max={1000} 
-              step={150} />
+              step={100} />
             <div className='mt-2 -mx-1.5 flex items-center justify-between text-muted-foreground text-xs'>
-              {prices.map((price, idx) => (
-                <span key={idx}>${price}{idx == prices.length-1 && '+'}</span>
-              ))}
+             <span>$100</span><span className={clsx(filters?.price ? "text-lg font-bold bg-gray-200 px-1 rounded-md shadow-inner w-20 text-center" : "hidden")}>{filters?.price == 1000 ? 'any' : ` < $${filters?.price}`}</span><span>$1000+</span> 
             </div>
         </div>
         <div>
@@ -58,7 +51,7 @@ const FilterMenu = ({setFilters, handleClick, filters}: PropTypes) => {
             <p className='font-bold text-gray-400'>0:00 - 24:00</p>
           </div>
            <TimeSlider 
-            departureTimes={filters?.departureTime || [600, 800]}
+            departureTimes={filters?.departureTime || [0, 2400]}
             changeTime={(timeRange: number[]) => setFilters(prev => ({...prev, departureTime: timeRange}))}/> 
         </div>
               <Button 

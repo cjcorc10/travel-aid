@@ -46,3 +46,5 @@ type Filters = {
   price?: number,
   departureTime?: number[] 
 }
+
+type FilterFunctions = (flight: Flight) => boolean
