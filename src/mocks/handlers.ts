@@ -18,12 +18,8 @@ export interface MockResponse {
 
 
 const generateFlight = (params: URL, duration: number): Flight => {
-  /**
-   * Calculate price
-   * adults - 100%
-   * kids - 70%
-   */
-  const price = duration * 45 + Math.random() * 90;
+  const price = duration * 45 + Math.random() * 90 + (Math.random() > .5 ? 150 : 0)
+
   
 
   // get airport codes for origin and destination

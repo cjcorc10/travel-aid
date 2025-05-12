@@ -10,15 +10,51 @@ import FlightPagination from '@/components/flightPagination';
 import FilterMenu from '@/components/filterMenu';
 
 const Flights = () => {
+
+  // state variable that holds flight data
   const [flights, setFlights] = useState<Flights>();
+  // is the data still being fetched
   const [isLoading, setIsLoading] = useState(true);
+  // are we picking departure or return flight
   const [isDepart, setIsDepart] = useState(true);
+  // did an error occur during the fetch
   const [isError, setIsError] = useState(false);
+  // what page are we currently on for pagination
   const [currentPage, setCurrentPage] = useState(0);
+  // store selected flights
   const [selectedFlights, setSelectedFlights] = useState<Flight[]>([]);
+  // parameters used to search for flights in form
   const [searchParams, setSearchParams] = useSearchParams();
+  // filter values
+  const [filterValues, setFilterValues] = useState<Filters>();
+
+  // navigate to other routes
   const navigate = useNavigate();
 
+
+  // filtering functions 
+  // price
+  const checkPrice = (flight: Flight) => {
+    console.log(flight['pricePerPassenger'])
+    if(filterValues?.price)
+      return Number(flight['pricePerPassenger']) < filterValues.price
+    else 
+      return true
+  }
+  // stops
+  // departure time 
+  const filterFlights = () => {
+    setFlights((prev) => {
+      if (!prev) return prev
+
+      const filteredFlights = prev.departingFlights.filter(checkPrice)      
+      return {
+        ...prev,
+        departingFlights: filteredFlights
+      }
+    })
+  }
+  
   const handlePageChange = (page: number) => {
     setCurrentPage((prev) => prev + page);
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -37,7 +73,7 @@ const Flights = () => {
   };
 
   // depending on filter chosen, sort the flights returned
-  const switchFilter = (filter: string) => {
+  const switchSort = (filter: string) => {
     switch (filter) {
       case 'pricePerPassenger':
         sortFlightsBy('pricePerPassenger');
@@ -114,15 +150,17 @@ const Flights = () => {
 
   const MAX_FLIGHTS_PER_PAGE = 6;
 
+  console.log(filterValues)
+  console.log(flights)
   return (
     <div className="w-full min-h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-20 px-2">
           <h2 className="text-2xl font-bold text-green-600 pb-2">
             {isDepart ? 'Departing' : 'Returning'} flights
           </h2>
       <div className='flex'>
-        <FilterMenu />
-        <div className='flex-3 min-w-xl'>
-          <div className='flex '>
+        <FilterMenu setFilters={setFilterValues} filters={filterValues} handleClick={filterFlights}/>
+        <div className='flex-3 '>
+          <div className='flex'>
           <BookingForm
             params={searchParams}
             isDepart={isDepart}
@@ -136,7 +174,7 @@ const Flights = () => {
             </div>
           <div className="md:hidden">
             <FilterFlights
-              changeFilter={(filterName: string) => switchFilter(filterName)}
+              changeFilter={(filterName: string) => switchSort(filterName)}
             />
           </div>
           {isLoading ? (

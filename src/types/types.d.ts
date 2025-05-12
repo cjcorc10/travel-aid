@@ -40,3 +40,9 @@ type Coordinate = {
   longitude: number;
   latitude: number;
 };
+
+type Filters = {
+  stops?: number,
+  price?: number,
+  departureTime?: number[] 
+}

@@ -34,7 +34,7 @@ const FilterFlights = ({changeFilter}: Filterprops) => {
             <Funnel color="white" className='hover:cursor-pointer' />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>filter by</DropdownMenuLabel>
+            <DropdownMenuLabel>sort by</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {Object.keys(filters).map(filterName => (
               <DropdownMenuItem
