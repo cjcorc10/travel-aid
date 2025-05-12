@@ -47,10 +47,17 @@ const Flights = () => {
       return Number(flight.layovers) === 0
 
     return filterValues?.stops
-      ? Number(flight.layovers) < filterValues.stops
+      ? Number(flight.layovers) <= filterValues.stops
       : true
   }
   // departure time 
+  const checkTime = (flight: Flight) => {
+    const num = filterValues?.departureTime
+    const flightDepart = Number(flight['departureTime']) * 100
+    return num
+      ? ( flightDepart >= num[0] && flightDepart <= num[1])
+      : true
+  }
 
   // apply filters
   const filterFlights = () => {
@@ -65,6 +72,9 @@ const Flights = () => {
 
     if(filterValues?.stops !== undefined)
       activeFilters.push(checkStops)
+
+    if(filterValues?.departureTime)
+      activeFilters.push(checkTime)
 
     const filtered = flights.departingFlights.filter(flight => 
       activeFilters.every(filter => filter(flight)))
@@ -246,7 +256,7 @@ const Flights = () => {
                 currentPage={currentPage}
                 flightsPerPage={
                   Math.ceil(
-                    flights?.departingFlights.length || MAX_FLIGHTS_PER_PAGE
+                    filteredFlights?.departingFlights.length || MAX_FLIGHTS_PER_PAGE
                   ) / MAX_FLIGHTS_PER_PAGE
                 }
               />
