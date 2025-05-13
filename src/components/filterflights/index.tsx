@@ -22,20 +22,16 @@ const filters: Dictionary = {
 
 const FilterFlights = ({changeFilter}: Filterprops) => {
   return (
-    <div className="mt-12 flex gap-2">
-      <input
+    <div className="mt-8 flex gap-2 justify-end md:absolute md:top-12 md:right-2">
+      {/* <input
         type="text"
         placeholder="filter by text.."
         className="bg-white rounded-md shadow-md p-2 flex-1 outline-pink-200"
-      />
-      <div className="bg-pink-300 rounded-md shadow-md p-2 flex">
+      /> */}
+      <div className="bg-white text-gray-600 font-bold px-12 py-1 rounded-sm shadow-md flex">
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Funnel color="white" className='hover:cursor-pointer' />
-          </DropdownMenuTrigger>
+          <DropdownMenuTrigger>sort by..</DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>sort by</DropdownMenuLabel>
-            <DropdownMenuSeparator />
             {Object.keys(filters).map(filterName => (
               <DropdownMenuItem
                 key={filterName}

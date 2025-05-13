@@ -207,7 +207,7 @@ const Flights = () => {
             }}
             />
             </div>
-          <div className="md:hidden">
+          <div className="">
             <FilterFlights
               changeFilter={(filterName: string) => switchSort(filterName)}
             />
