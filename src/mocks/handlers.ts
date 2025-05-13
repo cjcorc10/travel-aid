@@ -17,13 +17,9 @@ export interface MockResponse {
 
 
 
-const generateFlight = (params: URL, duration: number) => {
-  /**
-   * Calculate price
-   * adults - 100%
-   * kids - 70%
-   */
-  const price = duration * 45 + Math.random() * 90;
+const generateFlight = (params: URL, duration: number): Flight => {
+  const price = duration * 45 + Math.random() * 90 + (Math.random() > .5 ? 150 : 0)
+
   
 
   // get airport codes for origin and destination
@@ -37,8 +33,7 @@ const generateFlight = (params: URL, duration: number) => {
   const airline = getAirlineByCountry(origin);
 
   // departure time
-  let [hour, minute] = generateRandomTime(6, 23);
-  const [departureHour, departurePM] = convertFromMilitary(hour);
+  const [hour, minute] = generateRandomTime(6, 23);
   
   // total travel time
   const layovers = (hour > 21) ? 0 : getLayovers(duration);
@@ -57,7 +52,7 @@ const generateFlight = (params: URL, duration: number) => {
       : 0;
 
   // arrival time
-  let arrivalHour = hour + totalHours - timeZoneDiff;
+  let arrivalHour = Math.floor(hour + totalHours - timeZoneDiff)
   let arrivalMin = minute + totalMins;
   const [finalArrive, arrivePM] = convertFromMilitary(arrivalHour, arrivalMin);
   arrivalMin %= 60;
@@ -68,12 +63,12 @@ const generateFlight = (params: URL, duration: number) => {
     airline: airline.name,
     origin: originCode,
     destination: destinationCode,
-    departureTime: `${departureHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}${departurePM ? 'pm' : 'am'}`,
-    duration: `${totalHours}h ${totalMins % 60}m`,
+    departureTime: `${hour}.${minute}`,
+    // duration: `${totalHours}h ${totalMins % 60}m`,
+    duration: `${totalHours}.${totalMins}`,
     arrivalTime: `${finalArrive.toString().padStart(2, '0')}:${arrivalMin.toString().padStart(2, '0')}${arrivePM ? 'pm' : 'am'}`,
-    layovers,
+    layovers: layovers.toString(),
     pricePerPassenger: price.toFixed(0),
-    discountedPrice: price * .7
   };
 };
 
@@ -109,7 +104,6 @@ export const handlers = [
     );
 
     const flights: Flights = {
-      roundTrip: false,
       departingFlights: Array.from(new Array(8 + Math.floor(Math.random() * 10 * 2)), () =>
         generateFlight(url, time)
       ),

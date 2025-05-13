@@ -7,51 +7,152 @@ import { getFlights } from '@/services/flights';
 import { motion } from 'motion/react';
 import { LoaderCircle } from 'lucide-react';
 import FlightPagination from '@/components/flightPagination';
-import clsx from 'clsx';
-
+import FilterMenu from '@/components/filterMenu';
 
 const Flights = () => {
+
+  // state variable that holds flight data
   const [flights, setFlights] = useState<Flights>();
+  const [filteredFlights, setFilteredFlights] = useState<Flights>();
+  // is the data still being fetched
   const [isLoading, setIsLoading] = useState(true);
-  const [isDepart, setIsDepart] = useState(true)
-  const [isError, setIsError] = useState(false)
-  const [currentPage, setCurrentPage] = useState(0)
+  // are we picking departure or return flight
+  const [isDepart, setIsDepart] = useState(true);
+  // did an error occur during the fetch
+  const [isError, setIsError] = useState(false);
+  // what page are we currently on for pagination
+  const [currentPage, setCurrentPage] = useState(0);
+  // store selected flights
+  const [selectedFlights, setSelectedFlights] = useState<Flight[]>([]);
+  // parameters used to search for flights in form
   const [searchParams, setSearchParams] = useSearchParams();
-  
-  const navigate = useNavigate()
-  const handlePageChange = (page: number) => {
-    setCurrentPage(prev => prev + page)
-    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+  // filter values
+  const [filterValues, setFilterValues] = useState<Filters>();
+
+  // navigate to other routes
+  const navigate = useNavigate();
+
+
+  // filtering functions 
+  // price
+  const checkPrice = (flight: Flight) => {
+    return filterValues?.price 
+      ? Number(flight['pricePerPassenger']) < filterValues.price
+      : true
+  }
+  // stops
+  const checkStops = (flight: Flight) => {
+    // edge case for if stops is equal to 0
+    if(filterValues?.stops === 0)
+      return Number(flight.layovers) === 0
+
+    return filterValues?.stops
+      ? Number(flight.layovers) <= filterValues.stops
+      : true
+  }
+  // departure time 
+  const checkTime = (flight: Flight) => {
+    const num = filterValues?.departureTime
+    const flightDepart = Number(flight['departureTime']) * 100
+    return num
+      ? ( flightDepart >= num[0] && flightDepart <= num[1])
+      : true
+  }
+
+  // apply filters
+  const filterFlights = () => {
+    if (!flights) {
+      setFilteredFlights(flights)
+      return
+    }
+    const activeFilters: FilterFunctions[] = [];
+
+    if(filterValues?.price)
+      activeFilters.push(checkPrice)
+
+    if(filterValues?.stops !== undefined)
+      activeFilters.push(checkStops)
+
+    if(filterValues?.departureTime)
+      activeFilters.push(checkTime)
+
+    const filtered = flights.departingFlights.filter(flight => 
+      activeFilters.every(filter => filter(flight)))
+
+    setFilteredFlights(() => {
+      return {
+        ...flights,
+        departingFlights: filtered
+      }
+    })
   }
   
+  const handlePageChange = (page: number) => {
+    setCurrentPage((prev) => prev + page);
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  };
+
+
+  // called by switch function to re-order the flights based on a property
+  const sortFlightsBy = (property: string) => {
+
+    setFilteredFlights((prev) => {
+      if (!prev) return prev;
+
+        return {
+          ...prev,
+          departingFlights: prev?.departingFlights.sort(compareByX(property)),
+        };
+    });
+  };
+
+  // depending on filter chosen, sort the flights returned
+  const switchSort = (filter: string) => {
+    switch (filter) {
+      case 'pricePerPassenger':
+        sortFlightsBy('pricePerPassenger');
+        break;
+      case 'departureTime':
+        sortFlightsBy('departureTime');
+        break;
+      case 'duration':
+        sortFlightsBy('duration');
+        break;
+    }
+  };
+
+  // comparison function used with array.sort to compare properties in flights
+  const compareByX = (property: string) => {
+    return (a: Flight, b: Flight) => {
+      if (Number(a[property]) < Number(b[property])) return -1;
+      else if (Number(a[property]) > Number(b[property])) return 1;
+      return 0;
+    };
+  };
+
   // event handler for when flight is selected
-  const handleFlightSelection = (price: string) => {
-    // store prices
-    localStorage.setItem(clsx(isDepart ? 'departCost' : 'returnCost'), price)
-  
+  const handleFlightSelection = (flight: Flight) => {
+    // store selectedFlights
+    setSelectedFlights((prev) => [...prev, flight]);
 
     // swap values after selecting first flight
-    const params = new URLSearchParams()
-    for(let [key, value] of searchParams) {
-      if(key === 'destination')
-        params.set('departing', value)
-      else if(key === 'departing')
-        params.set('destination', value)
-      else
-      params.set(key,value)
+    const params = new URLSearchParams();
+    for (let [key, value] of searchParams) {
+      if (key === 'destination') params.set('departing', value);
+      else if (key === 'departing') params.set('destination', value);
+      else params.set(key, value);
     }
-  
-      setIsDepart(false)
-      setSearchParams(params);
-  }
 
+    setIsDepart(false);
+    setSearchParams(params);
+  };
 
   // fetch flight data and set as state for render
   useEffect(() => {
     // if all flights have been selected, navigate to checkout page
-    const roundTrip = searchParams.get('to')
-    if(roundTrip === '' && !isDepart || !isDepart && localStorage.getItem('returnCost'))
-      navigate('/checkout')    
+    const roundTrip = searchParams.get('to');
+    if ((roundTrip === '' && !isDepart) || selectedFlights.length == 2)
+      navigate('/checkout', { state: selectedFlights });
 
     setIsLoading(true);
     setIsError(false);
@@ -71,59 +172,97 @@ const Flights = () => {
       try {
         const data = await getFlights(searchParams.toString());
         setFlights(data.body);
+        setFilteredFlights(data.body);
         localStorage.setItem('previous search', searchParams.toString());
         localStorage.setItem('previous flights', JSON.stringify(data.body));
-      } catch(e) {
-        setIsError(true)
-        console.log(e)
+      } catch (e) {
+        setIsError(true);
+        console.log(e);
       }
       setIsLoading(false);
     })();
   }, [searchParams]);
 
-  const MAX_FLIGHTS_PER_PAGE = 6
+  const MAX_FLIGHTS_PER_PAGE = 6;
 
-
+  console.log(filterValues)
+  console.log(flights)
   return (
     <div className="w-full min-h-screen absolute top-0 left-0 bg-emerald-50 flex flex-col pt-20 px-2">
-      <h2 className='text-2xl font-bold text-green-600 pb-2'>{isDepart ? 'Departing' : 'Returning'} flights</h2>
-      <BookingForm
-        params={searchParams}
-        isDepart={isDepart}
-        updateParams={(key, value) => {
-          setSearchParams(params => {
-            params.set(key, value);
-            return params
-          })
-          }}
-      />
-      <FilterFlights />
-      {isLoading ? (
-        <div className='flex justify-center p-12'>
-        <LoaderCircle size={48} color={'green'} className='animate-spin'/>
-        </div>
-      
-      ) : (
-        isError ? <h3 className='text-center pt-4 text-xl text-red-400'>Unable to find flight data... Please try again</h3> :
-        flights?.departingFlights?.slice(MAX_FLIGHTS_PER_PAGE * currentPage, MAX_FLIGHTS_PER_PAGE * (currentPage + 1))
-        .map((flight, idx) => (
-          <motion.div
-            key={flight.flightId}
-            initial={{ opacity: 0, translateY: '20px' }}
-            animate={idx < 3 && { opacity: 1, translateY: 0}}
-            whileInView={{ opacity: 1, translateY: 0 }}
-            viewport={{ once: true }}
-            transition={{
-              delay: idx < 3 ? (idx % 3) * 0.2 : 0.2,
-              duration: 0.5,
+          <h2 className="text-2xl font-bold text-green-600 pb-2">
+            {isDepart ? 'Departing' : 'Returning'} flights
+          </h2>
+      <div className='flex'>
+        <FilterMenu setFilters={setFilterValues} filters={filterValues} handleClick={filterFlights}/>
+        <div className='flex-3 '>
+          <div className='flex'>
+          <BookingForm
+            params={searchParams}
+            isDepart={isDepart}
+            updateParams={(key, value) => {
+              setSearchParams((params) => {
+                params.set(key, value);
+                return params;
+              });
             }}
-            >
-            <FlightCard flight={flight} handleClick={handleFlightSelection} />
-              </motion.div>
-        ))
-      )}
-      <div className='py-8 flex justify-center gap-4 text-pink-400'>
-      { !isLoading && !isError && <FlightPagination handlePageChange={handlePageChange} currentPage={currentPage} flightsPerPage={Math.ceil(flights?.departingFlights.length || MAX_FLIGHTS_PER_PAGE) / MAX_FLIGHTS_PER_PAGE}/>}
+            />
+            </div>
+          <div className="">
+            <FilterFlights
+              changeFilter={(filterName: string) => switchSort(filterName)}
+            />
+          </div>
+          {isLoading ? (
+            <div className="flex justify-center p-12">
+              <LoaderCircle
+                size={48}
+                color={'green'}
+                className="animate-spin"
+              />
+            </div>
+          ) : isError ? (
+            <h3 className="text-center pt-4 text-xl text-red-400">
+              Unable to find flight data... Please try again
+            </h3>
+          ) : (
+            filteredFlights?.departingFlights
+              ?.slice(
+                MAX_FLIGHTS_PER_PAGE * currentPage,
+                MAX_FLIGHTS_PER_PAGE * (currentPage + 1)
+              )
+              .map((flight, idx) => (
+                <motion.div
+                  key={flight.flightId}
+                  initial={{ opacity: 0, translateY: '20px' }}
+                  animate={idx < 3 && { opacity: 1, translateY: 0 }}
+                  whileInView={{ opacity: 1, translateY: 0 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    delay: idx < 3 ? (idx % 3) * 0.2 : 0.2,
+                    duration: 0.5,
+                  }}
+                >
+                  <FlightCard
+                    flight={flight}
+                    handleClick={handleFlightSelection}
+                  />
+                </motion.div>
+              ))
+          )}
+          <div className="py-8 flex justify-center gap-4 text-pink-400">
+            {!isLoading && !isError && (
+              <FlightPagination
+                handlePageChange={handlePageChange}
+                currentPage={currentPage}
+                flightsPerPage={
+                  Math.ceil(
+                    filteredFlights?.departingFlights.length || MAX_FLIGHTS_PER_PAGE
+                  ) / MAX_FLIGHTS_PER_PAGE
+                }
+              />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

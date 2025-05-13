@@ -23,7 +23,7 @@ const FlightForm = () => {
   return (
     <form
       aria-label="form"
-      className="bg-white w-full flex flex-col md:rounded-lg shadow-lg  max-w-4xl border border-gray-200 mb-12"
+      className="bg-white w-full flex flex-col md:rounded-lg shadow-lg  max-w-xl border border-gray-200 mb-12"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col p-8">
@@ -32,7 +32,7 @@ const FlightForm = () => {
           state={roundTrip}
         />
         <div className="flex flex-col md:flex-row md:gap-6">
-          <div className="flex flex-col flex-1 mb-4">
+          <div className="flex flex-col mb-4 md:w-60">
             <label className="text-gray-600">From</label>
             <Controller
               name="departing"
@@ -43,7 +43,7 @@ const FlightForm = () => {
               )}
             />
           </div>
-          <div className="flex flex-col flex-1 mb-4">
+          <div className="flex flex-col md:w-60 mb-4">
             <label className="text-gray-600">To</label>
             <Controller
               name="destination"

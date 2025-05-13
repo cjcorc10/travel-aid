@@ -5,7 +5,6 @@ type Inputs = {
   to?: string;
   adults: number;
   children: number;
-  isRoundTrip?: boolean;
   [Symbol.iterator]()
 };
 
@@ -15,16 +14,14 @@ type Flight = {
   airline: string;
   origin: string;
   destination: string;
-  departureTime: string;
-  duration: string;
+  [departureTime: string]: string;
+  [duration: string]: string;
   arrivalTime: string;
-  pricePerPassenger: string;
-  layovers: number;
-  discountedPrice: number
+  [pricePerPassenger: string]: string;
+  layovers: string;
 };
 
 type Flights = {
-  roundTrip: boolean;
   departingFlights: Flight[]
   totalPassengers: number;
 };
@@ -43,3 +40,11 @@ type Coordinate = {
   longitude: number;
   latitude: number;
 };
+
+type Filters = {
+  stops?: number,
+  price?: number,
+  departureTime?: number[] 
+}
+
+type FilterFunctions = (flight: Flight) => boolean
