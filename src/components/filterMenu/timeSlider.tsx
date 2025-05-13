@@ -34,7 +34,6 @@ type componentProps = {
 }
 
 const TimeSlider = ({changeTime, departureTimes}: componentProps) => {
-    const [value, setValue] = React.useState([600, 800]);
     const [from, to] = departureTimes
     return (
       <div className="w-full max-w-sm mx-auto">

@@ -20,9 +20,8 @@ const Checkout = () => {
   // get flights and adult/child prices
   const flights = location.state
   const adultPrices = flights.map((flight: Flight) => Number(flight.pricePerPassenger))
-  const kidsPrices = flights.map((flight: Flight) => Number(flight.discountedPrice))
+  // const kidsPrices = flights.map((flight: Flight) => Number(flight.discountedPrice))
   const totalAdult = adultPrices.reduce((accumulator: number, currentValue: number) => accumulator + currentValue, 0)
-  const totalKids = kidsPrices.reduce((accumulator: number, currentValue: number) => accumulator + currentValue, 0)
   
   return (
     <div className="flex flex-col px-2 font-montserrat bg-green-50 absolute top-0 left-0 pt-16 w-full min-h-screen">
